@@ -3,16 +3,19 @@
 		<div class="floor my p setting">
 			<div class="content">
 				<div class="floor list7">
-					<volist name="type" id="vo">
+					<volist name="repair_type" id="vo">
 						<div class="myorder p">
 							<div class="content30">
-								<a href="{:U('Mobile/repair/',array('action'=>'nickname'))}">
+								<if $action =="pc">
+									<a href="{:U('Mobile/repair/pc_repair',array('type'=>$vo.type))}">
+								<else />
+									<a href="{:U('Mobile/repair/mobile_repair',array('type'=>$vo.type))}">
+								</if>
 									<div class="order">
 										<div class="fl">
-											<span>选择类型:</span>
+											<span>{$vo.name}</span>
 										</div>
 										<div class="fr">
-	                                        <span>{$vo}</span>
 											<i class="Mright"></i>
 										</div>
 									</div>

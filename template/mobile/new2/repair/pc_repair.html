@@ -1,148 +1,130 @@
-<include file="public/header" title="新增收货地址" body="pore_add"/>
-<include file="public/header_nav" title="新增收货地址" href="javascript:history.back(-1)"/>
-<div class="floor my p edit">
-    <form action="{:U('Mobile/User/add_address')}" method="post" id="addressForm">
-        <div class="content">
-            <div class="floor list7">
-                <div class="myorder p">
-                    <div class="content30">
-                        <a href="javascript:void(0)">
-                            <div class="order">
-                                <div class="fl">
-                                    <span>收货人:</span>
-                                </div>
-                                <div class="fl">
-                                    <input type="text" value="{$address.consignee}" name="consignee"/>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="myorder p">
-                    <div class="content30">
-                        <a href="javascript:void(0)">
-                            <div class="order">
-                                <div class="fl">
-                                    <span>手机号码:</span>
-                                </div>
-                                <div class="fl">
-      								<input type="tel" value="{$address.mobile}" name="mobile" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"/>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="myorder p">
-                    <div class="content30">
-                        <a href="javascript:void(0)">
-                            <div class="order">
-                                <div class="fl">
-                                    <span>详细地址:</span>
-                                </div>
-                                <div class="fl">
-                                    <input type="text" value="{$address.address}" name="address"/>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-<script src="__STATIC__/js/mobile-location.js"></script>
-<script type="text/javascript">
-    $(function(){
-        $('.turnoff').click(function(){
-            $(this).toggleClass('turnup');
-            $("input[name=is_default]").val(Number($(this).hasClass('turnup')));
-        });
-    })
-</script>
-<script type="text/javascript">
-    $(function(){
-        $('.menu').click(function(){
-            $('.ed_shdele').show();
-            $('.mask-filter-div').show();
-        })
-        $('.ed_shdele .clos').click(function(){
-            $('.ed_shdele').hide();
-            $('.mask-filter-div').hide();
-        })
-    });
-</script>
-<script type="text/javascript">
-    function checkForm(){
-        var consignee = $('input[name="consignee"]').val();
-        var address = $('input[name="address"]').val();
-        var mobile = $('input[name="mobile"]').val();
-        var area = $('#area').val();
-        var error = '';
-        if(consignee == ''){
-            error += '收货人不能为空 <br/>';
-        }
-        if(address == ''){
-            error += '请填写地址 <br/>';
-        }
-        if(!checkMobile(mobile)){
-            error += '手机号码格式有误 <br/>';
-        }
-        if(area == '') {
-            error += '所在地区不能为空 <br/>';
-        }
-        if(error){
-            layer.open({content:error,time:2});
+<include file="public/header" title="电脑预约维护" body="g4"/>
+<include file="public/header_nav" title="电脑预约维护" href="javascript:history.back(-1);"/>
+		<form action="{:U('Mobile/repair/pc_repairs_add')}" method="post" id="addressForm">
+		<div class="floor my p setting">
+			<div class="content">
+				<div class="floor list7">
+					<div class="myorder p">
+						<div class="content30">
+							<a href="javascript:void(0)">
+								<div class="order">
+									<div class="fl">
+										<span>联系人:</span>
+									</div>
+									<div class="fl">
+                                        <input type="text" value="" name="consignee"/>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="myorder p">
+						<div class="content30">
+							<a href="javascript:void(0)">
+								<div class="order">
+									<div class="fl">
+										<span>电话:</span>
+									</div>
+									<div class="fl">
+                                        <input type="tel" value="{$address.mobile}" name="mobile" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"/>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="myorder p">
+						<div class="content30">
+							<a href="{:U('Mobile/repair/repair_sreach',array('type_sreach'=>'pc'))}">
+								<div class="order">
+									<div class="fl">
+										<span>电脑类型:</span>
+									</div>
+									<div class="fr">
+                                        <span>{$repair_type.name}</span>
+										<i class="Mright"></i>
+									</div>
+									<input type="hidden" value="{$repair_type.type}" name="type"/>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="myorder p">
+						<div class="content30">
+							<a href="/Mobile/repair/pc_problems/type/{$repair_type.type}">
+								<div class="order">
+									<div class="fl">
+										<span>问题描述:</span>
+									</div>
+									<div class="fr">
+                                        <span>{$problems.name}</span>
+										<i class="Mright"></i>
+									</div>
+									<input type="hidden" value="{$problems.problems_id}" name="problems_id"/>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="myorder p">
+						<div class="content30">
+							<a href="javascript:void(0)">
+								<div class="order">
+									<div class="fl">
+										<span>备注:</span>
+									</div>
+									<div class="fl">
+                                        <input type="text" value="" name="des"/>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="myorder p">
+						<div class="content30">
+							<a href="javascript:void(0)">
+								<div class="order">
+									<div class="fl">
+										<span>详细地址:</span>
+									</div>
+									<div class="fl">
+                                        <input type="text" value="" name="address"/>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+			</div>
+			<div class="close">
+				<a href="javascript:void(0)" id="logout">确定</a>
+			</div>
+		</div>
+      </div>
+      </form>
+<script>
+
+$(function(){
+    $("#logout").click(function(){
+    	var mobile = $('input[name="mobile"]').val();
+    	var address = $('input[name="address"]').val();
+    	if(address == ''){
+            alert("请填写地址");
             return false;
         }
-
-        return $('#addressForm').submit();
-    }
-</script>
-<script type="text/javascript">
-    function locationaddress(e){
-        $('.container').animate({width: '14.4rem', opacity: 'show'}, 'normal',function(){
-            $('.container').show();
-        });
-        if(!$('.container').is(":hidden")){
-            $('body').css('overflow','hidden')
-            cover();
-            $('.mask-filter-div').css('z-index','9999');
+        if(!checkMobile(mobile)){
+        	 alert("请填写正确的电话号码");
+             return false;
         }
-    }
-    function closelocation(){
-        var province_div = $('.province-list');
-        var city_div = $('.city-list');
-        var area_div = $('.area-list');
-        if(area_div.is(":hidden") == false){
-            area_div.hide();
-            city_div.show();
-            province_div.hide();
-            return;
-        }
-        if(city_div.is(":hidden") == false){
-            area_div.hide();
-            city_div.hide();
-            province_div.show();
-            return;
-        }
-        if(province_div.is(":hidden") == false){
-            area_div.hide();
-            city_div.hide();
-            $('.container').animate({width: '0', opacity: 'show'}, 'normal',function(){
-                $('.container').hide();
-            });
-            undercover();
-            $('.mask-filter-div').css('z-index','inherit');
-            return;
-        }
-    }
-    $('body').on('click', '.area-list p', function () {
-        var area = ' '+getCookie('province_name')+' '+getCookie('city_name')+' '+getCookie('district_name');
-        $("#area").val(area);
-        $("input[name=province]").val(getCookie('province_id'));
-        $("input[name=city]").val(getCookie('city_id'));
-        $("input[name=district]").val(getCookie('district_id'));
+        $("#addressForm").submit();
+//         var consignee = $('input[name="consignee"]').val();
+//         var type = {$repair_type.type};
+//         var problems_id = {$problems.problems_id};
+//         var des = $('input[name="des"]').val();
+//         var address = $('input[name="address"]').val();
+        
+        
+        
+//     	location.href = "/Mobile/repair/pc_repairs_add/type/{$repair_type.type}/problems_id/{$problems.problems_id}";
     });
-</script>
-</body>
+});
+</script>      
+	</body>
 </html>
