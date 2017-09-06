@@ -1,187 +1,158 @@
-<include file="public/header" title="手机维修" body="g4"/>
-<include file="public/header_nav" title="手机维修" href="javascript:history.back(-1);"/>
-		<div class="floor my p setting">
-			<div class="content">
-				<div class="floor list7">
-					<div class="myorder p">
-						<div class="content30">
-							<a href="{:U('Mobile/repair/type_sreach',array('type'=>'pc'))}">
-								<div class="order">
-									<div class="fl">
-									</div>
-									<div class="fr">
-										<i class="Mright"></i>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="myorder p">
-						<div class="content30">
-							<a href="{:U('Mobile/repair/marker_sreach',array('type'=>'marker'))}">
-								<div class="order">
-									<div class="fl">
-										<span>性别</span>
-									</div>
-									<div class="fr">
-                                        <span>{$sex[$user.sex]}</span>
-										<i class="Mright"></i>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="myorder p">
-						<div class="content30">
-							<a href="{:U('Mobile/User/userinfo',array('action'=>'mobile'))}">
-								<div class="order">
-									<div class="fl">
-										<span>手机</span>
-									</div>
-									<div class="fr">
-                                        <span>{$user.mobile}</span>
-										<i class="Mright"></i>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="myorder p bo">
-						<div class="content30">
-							<a href="{:U('Mobile/User/userinfo',array('action'=>'email'))}">
-								<div class="order">
-									<div class="fl">
-										<span>邮箱</span>
-									</div>
-									<div class="fr">
-                                        <span>{$user.email}</span>
-										<i class="Mright"></i>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="myorder p ma-to-20">
-						<div class="content30">
-							<a href="{:U('Mobile/User/password')}">
-								<div class="order">
-									<div class="fl">
-										<span>修改密码</span>
-									</div>
-									<div class="fr">
-										<i class="Mright"></i>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-                    <div class="myorder p">
-                        <div class="content30">
-                            <a href="{:U('Mobile/User/paypwd')}">
-                                <div class="order">
-                                    <div class="fl">
-                                        <span>支付密码</span>
-                                    </div>
-                                    <div class="fr">
-                                        <i class="Mright"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-					<div class="myorder p">
-						<div class="content30">
-							<a href="{:U('Mobile/User/address_list')}">
-								<div class="order">
-									<div class="fl">
-										<span>收货地址</span>
-									</div>
-									<div class="fr">
-										<i class="Mright"></i>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-					<!--<div class="myorder p bo">
-						<div class="content30">
-							<a href="{:U('Mobile/User/authinfo')}">
-								<div class="order">
-									<div class="fl">
-										<span>实名认证</span>
-									</div>
-									<div class="fr">
-										<i class="Mright"></i>
-									</div>
-								</div>
-							</a>
-						</div>
-					&lt;!&ndash;</div>&ndash;&gt;
-				</div>-->
-			</div>
-			<div class="close">
-				<a href="{:U('User/logout')}" id="logout">安全退出</a>
-				<a id="asubmit" style="display:none;" href="javascript:;" onclick="javascript:$('#head_pic').submit();">保存头像</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>手机维护</title>
+    <script src="__STATIC__/js/mui.min.js"></script>
+    <link type="text/css" href="__STATIC__/css/mui.min.css" rel="stylesheet"/>
+    <link type="text/css" href="__STATIC__/css/mui.picker.css" rel="stylesheet" />
+    <link type="text/css" href="__STATIC__/css/mui.poppicker.css" rel="stylesheet" />
+    <script src="__STATIC__/js/mui.picker.js"></script>
+    <script src="__STATIC__/js/mui.poppicker.js"></script>
+    <style>
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			
+	</style>
+</head>
+<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">手机维护</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+							<div class="mui-input-row">
+								<label>联系人:</label>
+								<input type="text" placeholder="请输入联系人的姓名">
+							</div>
+							<div class="mui-input-row">
+								<label>电话:</label>
+								<input type="text" class="mui-input-clear" placeholder="请输入联系电话">
+							</div>
+		
+							<div class="mui-input-row">
+								<label>地址:</label>
+								<input type="text" class="mui-input-clear" placeholder="请输入取货地址">
+							</div>
+							<h5 class="mui-content-padded">请选择维修类型:</h5>
+							<ul class="mui-table-view mui-table-view-radio">
+								<li class="mui-table-view-cell">
+									<a class="mui-navigate-right">
+										苹果手机
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-selected">
+									<a class="mui-navigate-right">
+										安卓手机
+									</a>
+								</li>
+							</ul>
+							<h5 class="mui-content-padded">请选择问题描述:</h5>
+							<ul class="mui-table-view mui-table-view-radio">
+								<li class="mui-table-view-cell">
+									<a class="mui-navigate-right">
+										屏幕更换
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-selected">
+									<a class="mui-navigate-right">
+										屏幕置换
+									</a>
+								</li>
+								<li class="mui-table-view-cell ">
+									<a class="mui-navigate-right">
+										手机无法开机
+									</a>
+								</li>
+							</ul>
+							<h5 class="mui-content-padded">请选择手机型号:</h5>
+							<button id='showCityPicker' class="mui-btn mui-btn-block" type='button'>点击选择</button>
+							<div id='cityResult' class="ui-alert"></div>
+							<h5 class="mui-content-padded">预估服务费用:¥<sapn style="color:red;">50</sapn></h5>
+							<h5 class="mui-content-padded">备注信息:</h5>
+							<div class="mui-input-row" style="margin: 10px 5px;">
+								<textarea id="textarea" rows="5" placeholder="其他要求请填写在此处"></textarea>
+							</div>
+							<div class="mui-button-row">
+								<button type="button" class="mui-btn mui-btn-success mui-btn-block">确认</button>
+							</div>
+				</form>
 			</div>
 		</div>
-      </div>
-<script>
-//显示上传照片
-window.URL = window.URL || window.webkitURL;
-function handleFiles(obj) {
-    fileList = document.getElementById("fileList");
-    var files = obj.files;
-    img = new Image();
-    if(window.URL){
-        img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
-        img.width = 60;
-        img.height = 60;
-        img.onload = function(e) {
-            window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
-        }
-        if(fileList.firstElementChild){
-            fileList.removeChild(fileList.firstElementChild);
-        }
-        $('#fileList').find('img').remove();
-        fileList.appendChild(img);
-    }else if(window.FileReader){
-        //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
-        var reader = new FileReader();
-        reader.readAsDataURL(files[0]);
-        reader.onload = function(e){
-            img.src = this.result;
-            img.width = 60;
-            img.height = 60;
-            $('#fileList').find('img').remove();
-            fileList.appendChild(img);
-        }
-    }else
-    {
-        //ie
-        obj.select();
-        obj.blur();
-        var nfile = document.selection.createRange().text;
-        document.selection.empty();
-        img.src = nfile;
-        img.width = 60;
-        img.height = 60;
-        img.onload=function(){
-
-        }
-        $('#fileList').find('img').remove();
-        fileList.appendChild(img);
-    }
-    $('#asubmit').show();
-    $('#logout').hide();
-    $('#head_pic').submit();
-}
-
-$(function(){
-    var ua = window.navigator.userAgent.toLowerCase();
-    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
-    	$('#logout').hide();
-    }
-});
-</script>      
-	</body>
+		<script>
+			(function($, doc) {
+				$.init();
+				$.ready(function() {
+					//-----------------------------------------
+					//级联示例
+					var brandPicker = new $.PopPicker({
+						layer: 2
+					});
+					brandPicker.setData([{
+				        value: '110000',
+				        text: '三星',
+				        children: [{
+				                value: "110101",
+				                text: "s7"
+				        },{
+			                value: "110101",
+			                text: "s8"
+			        	},{
+			                value: "110101",
+			                text: "s9"
+			        	},{
+			                value: "110101",
+			                text: "s10"
+			        	},{
+			                value: "110101",
+			                text: "s11"
+			        	}]
+				    }, {
+				        value: '120000',
+				        text: '华为',
+				        children: [{
+					        value: "120101",
+				            text: "p7"
+				        }, {
+				            value: "120102",
+				            text: "p6"
+				        }, {
+				            value: "120104",
+				            text: "p9"
+				        }
+				        ]
+				    }, {
+				        value: '120000',
+				        text: '苹果',
+				        children: [{
+					        value: "120101",
+				            text: "7"
+				        }, {
+				            value: "120102",
+				            text: "7p"
+				        }, {
+				            value: "120104",
+				            text: "7s"
+				        }
+				        ]
+				    }])
+					var showCityPickerButton = doc.getElementById('showCityPicker');
+					var cityResult = doc.getElementById('cityResult');
+					showCityPickerButton.addEventListener('tap', function(event) {
+						brandPicker.show(function(items) {
+							cityResult.innerText = "你选择的手机型号是:" + items[0].text + " " + items[1].text;
+							//返回 false 可以阻止选择框的关闭
+							//return false;
+						});
+					}, false);
+					//-----------------------------------------
+				});
+			})(mui, document);
+		</script>
+</body>
 </html>
