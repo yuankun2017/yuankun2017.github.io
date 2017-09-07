@@ -1,130 +1,87 @@
-<include file="public/header" title="电脑预约维护" body="g4"/>
-<include file="public/header_nav" title="电脑预约维护" href="javascript:history.back(-1);"/>
-		<form action="{:U('Mobile/repair/pc_repairs_add')}" method="post" id="addressForm">
-		<div class="floor my p setting">
-			<div class="content">
-				<div class="floor list7">
-					<div class="myorder p">
-						<div class="content30">
-							<a href="javascript:void(0)">
-								<div class="order">
-									<div class="fl">
-										<span>联系人:</span>
-									</div>
-									<div class="fl">
-                                        <input type="text" value="" name="consignee"/>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="myorder p">
-						<div class="content30">
-							<a href="javascript:void(0)">
-								<div class="order">
-									<div class="fl">
-										<span>电话:</span>
-									</div>
-									<div class="fl">
-                                        <input type="tel" value="{$address.mobile}" name="mobile" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"/>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="myorder p">
-						<div class="content30">
-							<a href="{:U('Mobile/repair/repair_sreach',array('type_sreach'=>'pc'))}">
-								<div class="order">
-									<div class="fl">
-										<span>电脑类型:</span>
-									</div>
-									<div class="fr">
-                                        <span>{$repair_type.name}</span>
-										<i class="Mright"></i>
-									</div>
-									<input type="hidden" value="{$repair_type.type}" name="type"/>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="myorder p">
-						<div class="content30">
-							<a href="/Mobile/repair/pc_problems/type/{$repair_type.type}">
-								<div class="order">
-									<div class="fl">
-										<span>问题描述:</span>
-									</div>
-									<div class="fr">
-                                        <span>{$problems.name}</span>
-										<i class="Mright"></i>
-									</div>
-									<input type="hidden" value="{$problems.problems_id}" name="problems_id"/>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="myorder p">
-						<div class="content30">
-							<a href="javascript:void(0)">
-								<div class="order">
-									<div class="fl">
-										<span>备注:</span>
-									</div>
-									<div class="fl">
-                                        <input type="text" value="" name="des"/>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="myorder p">
-						<div class="content30">
-							<a href="javascript:void(0)">
-								<div class="order">
-									<div class="fl">
-										<span>详细地址:</span>
-									</div>
-									<div class="fl">
-                                        <input type="text" value="" name="address"/>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-			</div>
-			<div class="close">
-				<a href="javascript:void(0)" id="logout">确定</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>电脑维护</title>
+    <script src="__STATIC__/js/mui.min.js"></script>
+    <link type="text/css" href="__STATIC__/css/mui.min.css" rel="stylesheet"/>
+    <style type="text/css">
+		.mui-selected:before {
+			content:'\e472';
+		}
+	</style>
+</head>
+<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">电脑维护</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+							<div class="mui-input-row">
+								<label>联系人:</label>
+								<input type="text" placeholder="请输入联系人的姓名">
+							</div>
+							<div class="mui-input-row">
+								<label>电话:</label>
+								<input type="text" class="mui-input-clear" placeholder="请输入联系电话">
+							</div>
+		
+							<div class="mui-input-row">
+								<label>地址:</label>
+								<input type="text" class="mui-input-clear" placeholder="请输入取货地址">
+							</div>
+							<h5 class="mui-content-padded">请选择维修类型:</h5>
+							<div class="mui-input-row mui-radio">
+								<label>笔记本</label>
+								<input name="radio1" type="radio">
+							</div>
+							<div class="mui-input-row mui-radio">
+								<label>台式机</label>
+								<input name="radio1" type="radio" checked>
+							</div>
+							<h5 class="mui-content-padded">请选择问题描述:</h5>
+							<ul class="mui-table-view mui-table-view-radio">
+								<li class="mui-table-view-cell">
+									<a class="mui-navigate-right">
+										电脑蓝屏
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-selected">
+									<a class="mui-navigate-right">
+										电脑无法开机
+									</a>
+								</li>
+								<li class="mui-table-view-cell ">
+									<a class="mui-navigate-right">
+										电脑不通电
+									</a>
+								</li>
+								<li class="mui-table-view-cell ">
+									<a class="mui-navigate-right">
+										显示器不显示
+									</a>
+								</li><li class="mui-table-view-cell ">
+									<a class="mui-navigate-right">
+										电脑重装系统
+									</a>
+								</li>
+								<li class="mui-table-view-cell ">
+									<a class="mui-navigate-right">
+										电脑除尘
+									</a>
+								</li>
+							</ul>
+							<h5 class="mui-content-padded">备注信息:</h5>
+							<div class="mui-input-row" style="margin: 10px 5px;">
+								<textarea id="textarea" rows="5" placeholder="其他要求请填写在此处"></textarea>
+							</div>
+							<div class="mui-button-row">
+								<button type="button" class="mui-btn mui-btn-success mui-btn-block">确认</button>
+							</div>
+				</form>
 			</div>
 		</div>
-      </div>
-      </form>
-<script>
-
-$(function(){
-    $("#logout").click(function(){
-    	var mobile = $('input[name="mobile"]').val();
-    	var address = $('input[name="address"]').val();
-    	if(address == ''){
-            alert("请填写地址");
-            return false;
-        }
-        if(!checkMobile(mobile)){
-        	 alert("请填写正确的电话号码");
-             return false;
-        }
-        $("#addressForm").submit();
-//         var consignee = $('input[name="consignee"]').val();
-//         var type = {$repair_type.type};
-//         var problems_id = {$problems.problems_id};
-//         var des = $('input[name="des"]').val();
-//         var address = $('input[name="address"]').val();
-        
-        
-        
-//     	location.href = "/Mobile/repair/pc_repairs_add/type/{$repair_type.type}/problems_id/{$problems.problems_id}";
-    });
-});
-</script>      
-	</body>
+</body>
 </html>
