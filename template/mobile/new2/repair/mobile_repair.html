@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title>手机维护</title>
     <script src="__STATIC__/js/mui.min.js"></script>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
     <link type="text/css" href="__STATIC__/css/mui.min.css" rel="stylesheet"/>
     <link type="text/css" href="__STATIC__/css/mui.picker.css" rel="stylesheet" />
     <link type="text/css" href="__STATIC__/css/mui.poppicker.css" rel="stylesheet" />
@@ -25,134 +27,126 @@
 		</header>
 		<div class="mui-content">
 			<div class="mui-content-padded" style="margin: 5px;">
-				<form class="mui-input-group">
+				<form class="mui-input-group" action="{:U('Mobile/Repair/mobile_repairs_add')}" method="post" id="mobile_repair">
 							<div class="mui-input-row">
 								<label>联系人:</label>
-								<input type="text" placeholder="请输入联系人的姓名">
+								<input type="text" name="consignee" placeholder="请输入联系人的姓名">
 							</div>
 							<div class="mui-input-row">
 								<label>电话:</label>
-								<input type="text" class="mui-input-clear" placeholder="请输入联系电话">
+								<input type="text" class="mui-input-clear"  name="mobile" id="mobile" placeholder="请输入联系电话" >
 							</div>
 		
 							<div class="mui-input-row">
 								<label>地址:</label>
-								<input type="text" class="mui-input-clear" placeholder="请输入取货地址">
+								<input type="text" class="mui-input-clear" name="address"  id="address" placeholder="请输入取货地址">
 							</div>
 							<h5 class="mui-content-padded">请选择维修类型:</h5>
 							<ul class="mui-table-view mui-table-view-radio">
-								<li class="mui-table-view-cell">
-									<a class="mui-navigate-right">
-										苹果手机
-									</a>
+								<li class="mui-table-view-cell mui-selected" id="mobile1">
+									<a class="mui-navigate-right">安卓手机</a>
 								</li>
-								<li class="mui-table-view-cell mui-selected">
-									<a class="mui-navigate-right">
-										安卓手机
-									</a>
+								<li class="mui-table-view-cell " id="mobile2">
+									<a class="mui-navigate-right">苹果手机</a>
 								</li>
 							</ul>
+							<input type="hidden" name="type" id="mobile_type" value="3">
 							<h5 class="mui-content-padded">请选择问题描述:</h5>
 							<ul class="mui-table-view mui-table-view-radio">
-								<li class="mui-table-view-cell">
-									<a class="mui-navigate-right">
-										屏幕更换
-									</a>
-								</li>
-								<li class="mui-table-view-cell mui-selected">
-									<a class="mui-navigate-right">
-										屏幕置换
-									</a>
-								</li>
-								<li class="mui-table-view-cell ">
-									<a class="mui-navigate-right">
-										手机无法开机
-									</a>
-								</li>
+								<volist name="problems" id="vo">
+									<if $i == 1>
+										<li class="mui-table-view-cell mui-selected mobile_problems" problems_id="{$vo.problems_id}" price="{$vo.price}">
+											<a class="mui-navigate-right">{$vo.name}</a>
+										</li>
+									<else />
+										<li class="mui-table-view-cell mobile_problems" problems_id="{$vo.problems_id}" price="{$vo.price}">	
+											<a class="mui-navigate-right">{$vo.name}</a>
+										</li>		
+									</if>
+								</volist>
 							</ul>
+							<input type="hidden" name="problems_id" id="problems_id" value="{$problems[0]['problems_id']}">
+							<h5 class="mui-content-padded">预估服务费用:¥<sapn id="price" style="color:red;">{$problems[0]['price']}</sapn></h5>
+
 							<h5 class="mui-content-padded">请选择手机型号:</h5>
 							<button id='showCityPicker' class="mui-btn mui-btn-block" type='button'>点击选择</button>
 							<div id='cityResult' class="ui-alert"></div>
-							<h5 class="mui-content-padded">预估服务费用:¥<sapn style="color:red;">50</sapn></h5>
+							<input type="hidden" name="mobile_bid" id="mobile_bid" value="">
+							<input type="hidden" name="mobile_pid" id="mobile_pid" value="">
 							<h5 class="mui-content-padded">备注信息:</h5>
 							<div class="mui-input-row" style="margin: 10px 5px;">
-								<textarea id="textarea" rows="5" placeholder="其他要求请填写在此处"></textarea>
+								<textarea id="textarea" rows="5" name="des" placeholder="其他问题和要求请填写在此处" form="mobile_repair"></textarea>
 							</div>
 							<div class="mui-button-row">
-								<button type="button" class="mui-btn mui-btn-success mui-btn-block">确认</button>
+								<button type="button" class="mui-btn mui-btn-success mui-btn-block" id="btn_ok">确认</button>
 							</div>
 				</form>
 			</div>
 		</div>
 		<script>
+		$(function(){
+			$("#mobile1").click(function(){
+				$("#mobile_type").val("3")
+			});
+			$("#mobile2").click(function(){
+				$("#mobile_type").val("4")
+			});
+			$(".mobile_problems").click(function(){
+				$("#problems_id").val($(this).attr("problems_id"));
+				$("#price").text($(this).attr("price"));
+			});
+			$("#btn_ok").click(function(){
+				var mobile = $("#mobile").val();
+				var address = $("#address").val();
+				var mobile_bid = $("#mobile_bid").val();
+				if(address == ''){
+					mui.alert('请填写取货地址', '毅腾科技提醒您');
+					return false;
+		        }
+		        if(!checkMobile(mobile)){
+		        	mui.alert('请填写正确的电话号码', '毅腾科技提醒您');
+		        	return false;
+		        }
+		        if(mobile_bid == ''){
+		        	mui.alert('请选择手机型号', '毅腾科技提醒您');
+					return false;
+		        }
+				$("#mobile_repair").submit();
+			})
+			});
 			(function($, doc) {
 				$.init();
 				$.ready(function() {
-					//-----------------------------------------
-					//级联示例
+					//品牌选择
 					var brandPicker = new $.PopPicker({
 						layer: 2
 					});
-					brandPicker.setData([{
-				        value: '110000',
-				        text: '三星',
-				        children: [{
-				                value: "110101",
-				                text: "s7"
-				        },{
-			                value: "110101",
-			                text: "s8"
-			        	},{
-			                value: "110101",
-			                text: "s9"
-			        	},{
-			                value: "110101",
-			                text: "s10"
-			        	},{
-			                value: "110101",
-			                text: "s11"
-			        	}]
-				    }, {
-				        value: '120000',
-				        text: '华为',
-				        children: [{
-					        value: "120101",
-				            text: "p7"
-				        }, {
-				            value: "120102",
-				            text: "p6"
-				        }, {
-				            value: "120104",
-				            text: "p9"
-				        }
-				        ]
-				    }, {
-				        value: '120000',
-				        text: '苹果',
-				        children: [{
-					        value: "120101",
-				            text: "7"
-				        }, {
-				            value: "120102",
-				            text: "7p"
-				        }, {
-				            value: "120104",
-				            text: "7s"
-				        }
-				        ]
-				    }])
+					brandPicker.setData({$android_result});
 					var showCityPickerButton = doc.getElementById('showCityPicker');
-					var cityResult = doc.getElementById('cityResult');
+					var mobile_bid = doc.getElementById('mobile_bid');
+					var mobile_pid = doc.getElementById('mobile_pid');
+					var showCityPicker = doc.getElementById('showCityPicker');
+					var mobile_type = doc.getElementById('mobile_type');
+					document.querySelector('.mui-table-view.mui-table-view-radio').addEventListener('selected',function(e){
+						if(e.detail.el.id == "mobile1"){
+							brandPicker.setData({$android_result});
+						}else{
+							brandPicker.setData({$apple_result});
+						}
+					});
 					showCityPickerButton.addEventListener('tap', function(event) {
 						brandPicker.show(function(items) {
-							cityResult.innerText = "你选择的手机型号是:" + items[0].text + " " + items[1].text;
+							mobile_bid.value = items[0].value;
+							mobile_pid.value = items[1].value;
+							showCityPicker.innerText = "你选择的手机型号是:" + items[0].text + " " + items[1].text;
 							//返回 false 可以阻止选择框的关闭
 							//return false;
 						});
 					}, false);
-					//-----------------------------------------
 				});
 			})(mui, document);
+			
+			
 		</script>
 </body>
 </html>
