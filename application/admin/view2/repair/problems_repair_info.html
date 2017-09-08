@@ -1,0 +1,84 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>维修问题管理 </h3>
+                <h5>维修问题管理详情页</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="repair_problems" method="post">
+        <input type="hidden" name="problems_id" value="{$info.problems_id}">
+        <input type="hidden" name="act" value="{$act}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>问题描述</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="problems_name" id="problems_name" value="{$info.name}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">问题描述</p>
+                </dd>
+            </dl>
+            
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>维修类型</label>
+                </dt>
+                <dd class="opt">
+                    <select id="type" name="type">
+                        <option value="1" <if condition="$info[type] eq 1">selected</if>>电脑</option>
+                        <option value="2" <if condition="$info[type] eq 2">selected</if>>手机</option>
+                    </select>
+                    <p class="notic">维修类型</p>
+                </dd>
+            </dl>
+             <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>服务费用</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="price" id="price" value="{$info.price}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">服务费用</p>
+                </dd>
+            </dl>
+            <div class="bot"><a onclick="verifyForm()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function verifyForm(){
+        $('span.err').hide();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Repair/repair_problems_handle')}",
+            data: $('#repair_problems').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function(){
+                        location.href = "{:U('Admin/Repair/problems')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

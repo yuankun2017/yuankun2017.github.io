@@ -106,7 +106,16 @@ return	array(
 					array('name' => '会员统计', 'act'=>'user', 'op'=>'Report'),
 					array('name' => '运营概览', 'act'=>'finance', 'op'=>'Report'),
 			)),
+	    
+    	    array('name' => '预约维护','child' => array(
+    	        array('name' => '电脑维护订单', 'act'=>'index', 'op'=>'Repair'),
+    	        array('name' => '手机维护订单', 'act'=>'mobile_repair', 'op'=>'Repair'),
+    	        array('name' => '预约问题管理', 'act'=>'problems', 'op'=>'Repair'),
+    	        array('name' => '手机品牌管理', 'act'=>'brand', 'op'=>'Repair'),
+    	        array('name' => '手机型号管理', 'act'=>'product', 'op'=>'Repair'),
+    	    )),
 	)),
+    
 		
 	'mobile'=>array('name'=>'模板','child'=>array(
 			array('name' => '设置','child' => array(

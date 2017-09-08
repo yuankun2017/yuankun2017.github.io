@@ -1,0 +1,135 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>电脑维修管理 </h3>
+                <h5>电脑维修管理详情页</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="repair_pc" method="post">
+        <input type="hidden" name="repair_pcid" value="{$info.repair_pcid}">
+        <input type="hidden" name="act" value="{$act}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>联系人</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="consignee" id="consignee" value="{$info.consignee}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">请填写联系人姓名</p>
+                </dd>
+            </dl>
+             <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>联系电话</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="mobile" id="mobile" value="{$info.mobile}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">请填写联系电话</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>取货地址</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="address" id="address" value="{$info.address}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">请填写取货地址</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>电脑维护类型</label>
+                </dt>
+                <dd class="opt">
+                    <select id="type" name="type">
+                        <option value="1" <if condition="$info[type] eq 1">selected</if>>台式机</option>
+                        <option value="2" <if condition="$info[type] eq 2">selected</if>>笔记本电脑</option>
+                    </select>
+                    <p class="notic">电脑维护类型</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>问题描述</label>
+                </dt>
+                <dd class="opt">
+                    <select id="problems_id" name="problems_id">
+                    	<volist name="problems" id="vo">
+	                        <option value="{$vo.problems_id}" <if condition="$info[problems_id] == $vo.problems_id">selected</if>>{$vo.name}</option>
+                        </volist>
+                    </select>
+                    <p class="notic">问题描述</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>备注</label>
+                </dt>
+                <dd class="opt">
+                    <textarea placeholder="请输入备注" name="des" rows="6" class="tarea">{$info.des}</textarea>
+                    <span class="err" id="err_intro"></span>
+                    <p class="notic">备注</p>
+                </dd>
+            </dl>
+            <div class="bot"><a onclick="verifyForm()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function verifyForm(){
+        $('span.err').hide();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Repair/pc_repair_handle')}",
+            data: $('#repair_pc').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function(){
+                        location.href = "{:U('Admin/Repair/index')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                }
+            }
+        });
+    }
+    function selectGoods(){
+        var url = "{:U('Promotion/search_goods',array('tpl'=>'select_goods'))}";
+        layer.open({
+            type: 2,
+            title: '选择商品',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '75%'],
+            content: url,
+        });
+    }
+
+    function call_back(goods_id,goods_name,store_count,price){
+        $('#goods_id').val(goods_id);
+        $('#goods_name').val(goods_name);
+        $('#group_num').val(store_count);
+        $('#goods_price').val(price);
+        layer.closeAll('iframe');
+    }
+</script>
+</body>
+</html>

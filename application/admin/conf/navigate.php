@@ -187,7 +187,16 @@
                          'remittance'=>'汇款记录',
                          'rebate_log'=>'分成记录',
                		)
-               ),        
+               ),  
+                'admin/repair'=>array(
+                    'name' =>'预约维护',
+                    'action'=>array(
+                        'index'=>'维护订单',
+                        'problems'=>'预约问题管理',
+                        'brand'=>'手机品牌管理',
+                        'product'=>'手机型号管理',
+                    )
+                ),
 
     );
 ?>
