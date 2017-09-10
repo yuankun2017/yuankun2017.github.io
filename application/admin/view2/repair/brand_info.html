@@ -1,0 +1,74 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>手机品牌管理 </h3>
+                <h5>手机品牌管理详情页</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="brand_info" method="post">
+        <input type="hidden" name="mobile_bid" value="{$info.mobile_bid}">
+        <input type="hidden" name="act" value="{$act}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>品牌名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="problems_name" id="problems_name" value="{$info.name}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">品牌名称</p>
+                </dd>
+            </dl>
+            
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>品牌类型</label>
+                </dt>
+                <dd class="opt">
+                    <select id="type" name="type">
+                        <option value="3" <if condition="$info[type] eq 3">selected</if>>安卓手机</option>
+                        <option value="4" <if condition="$info[type] eq 4">selected</if>>苹果手机</option>
+                    </select>
+                    <p class="notic">品牌类型</p>
+                </dd>
+            </dl>
+            <div class="bot"><a onclick="verifyForm()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function verifyForm(){
+        $('span.err').hide();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Repair/repair_mobile_brand_handle')}",
+            data: $('#brand_info').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function(){
+                        location.href = "{:U('Admin/Repair/brand')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

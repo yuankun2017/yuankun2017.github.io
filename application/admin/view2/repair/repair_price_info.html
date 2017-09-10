@@ -1,0 +1,212 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>预约收费管理 </h3>
+                <h5>预约收费管理详情页</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="repair_price_info" method="post">
+        <input type="hidden" name="repair_price_id" value="{$info.repair_price_id}">
+        <input type="hidden" name="act" value="{$act}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>维修类型</label>
+                </dt>
+                <dd class="opt">
+                    <select id="type" name="type">
+                        	<option value="1" <if condition="$info[type] eq 1">selected</if>>台式机</option>
+                        	<option value="2" <if condition="$info[type] eq 2">selected</if>>笔记本</option>
+                        	<option value="3" <if condition="$info[type] eq 3">selected</if>>安卓手机</option>
+                        	<option value="4" <if condition="$info[type] eq 4">selected</if>>苹果手机</option>
+                    </select>
+                    <p class="notic">手机品牌</p>
+                </dd>
+            </dl>
+            <dl class="row" id="mobile_brand" <if condition="$info[type] gt 2"> style="display:block"<else />style="display:none"</if>>
+                <dt class="tit">
+                    <label><em>*</em>手机品牌</label>
+                </dt>
+                <dd class="opt">
+                    <select id="mobile_bid" name="mobile_bid">
+                    	<volist name="brand_list" id="vo">
+                        	<option value="{$vo.mobile_bid}" <if condition="$info[mobile_bid] eq $vo[mobile_bid]">selected</if>>{$vo.name}</option>
+                        </volist>
+                    </select>
+                    <p class="notic">手机品牌</p>
+                </dd>
+            </dl>
+             <dl class="row" id="mobile_product" <if condition="$info[type] gt 2"> style="display:block"<else />style="display:none"</if>>
+                <dt class="tit">
+                    <label><em>*</em>手机型号</label>
+                </dt>
+                <dd class="opt">
+                    <select id="mobile_pid" name="mobile_pid">
+                    	<volist name="product_list" id="vo">
+                        	<option value="{$vo.mobile_pid}" <if condition="$info[mobile_pid] eq $vo[mobile_pid]">selected</if>>{$vo.name}</option>
+                        </volist>
+                    </select>
+                    <p class="notic">手机品牌</p>
+                </dd>
+            </dl>
+             <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>问题描述</label>
+                </dt>
+                <dd class="opt">
+                    <select id="problems" name="problems_id">
+                    	<volist name="problems" id="vo">
+                        	<option value="{$vo.problems_id}" <if condition="$info[problems_id] eq $vo[problems_id]">selected</if>>{$vo.name}</option>
+                        </volist>
+                    </select>
+                    <p class="notic">手机品牌</p>
+                </dd>
+            </dl>
+             <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>服务费用</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="price" id="price" value="{$info.price}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">服务费用</p>
+                </dd>
+            </dl>
+            
+            <div class="bot"><a onclick="verifyForm()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function verifyForm(){
+        $('span.err').hide();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Repair/repair_price_handle')}",
+            data: $('#repair_price_info').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function(){
+                        location.href = "{:U('Admin/Repair/repair_price')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                }
+            }
+        });
+    }
+    $(function(){
+		$("#type").change(function(){
+			var type = $(this).val();
+			if(type > 2){
+				//显示品牌,型号选择框
+				$("#mobile_brand").css("display","block");
+				$("#mobile_product").css("display","block");
+				$.ajax({
+			 		type: "POST",
+		            url: "{:U('Admin/Repair/get_brand')}",
+		            data: {"type":type},
+		            dataType: "json",
+		            success: function (data) {
+		                if (data.status == 1) {
+		                	$("#mobile_bid").html("");
+		                	$("#mobile_pid").html("");
+		                	var bid_html = '';
+		                	var pid_html = '';
+		                	//修改品牌
+		                	$.each(data.data.brand_list,function(){
+		                		bid_html +="<option value='"+this.mobile_bid+"'>"+this.name+"</option>";
+		                	})
+		                	//修改手机型号
+		                	$.each(data.data.product_list,function(){
+		                		pid_html +="<option value='"+this.mobile_pid+"'>"+this.name+"</option>";
+		                	})
+		                	$("#mobile_bid").html(bid_html);
+		                	$("#mobile_pid").html(pid_html);
+		                } 
+		            }
+				});
+				//修改问题描述
+				$.ajax({
+			 		type: "POST",
+		            url: "{:U('Admin/Repair/get_problems')}",
+		            data: {"type":2},
+		            dataType: "json",
+		            success: function (data) {
+		                if (data.status == 1) {
+		                	$("#problems").html("");
+		                	var problems_html = '';
+		                	//修改品牌
+		                	$.each(data.data,function(){
+		                		problems_html +="<option value='"+this.problems_id+"'>"+this.name+"</option>";
+		                	})
+		                	$("#problems").html(problems_html);
+		                } 
+		            }
+				});
+			}else{
+				//影藏品牌,型号选择框
+				$("#mobile_brand").css("display","none");
+				$("#mobile_product").css("display","none");
+				//修改问题描述
+				$.ajax({
+			 		type: "POST",
+		            url: "{:U('Admin/Repair/get_problems')}",
+		            data: {"type":1},
+		            dataType: "json",
+		            success: function (data) {
+		                if (data.status == 1) {
+		                	$("#problems").html("");
+		                	var problems_html = '';
+		                	//修改品牌
+		                	$.each(data.data,function(){
+		                		problems_html +="<option value='"+this.problems_id+"'>"+this.name+"</option>";
+		                	})
+		                	$("#problems").html(problems_html);
+		                } 
+		            }
+				});
+			}
+		});
+		
+		$("#mobile_bid").change(function(){
+			var mobile_bid = $(this).val();
+			$.ajax({
+		 		type: "POST",
+	            url: "{:U('Admin/Repair/get_product')}",
+	            data: {"mobile_bid":mobile_bid},
+	            dataType: "json",
+	            success: function (data) {
+	                if (data.status == 1) {
+	                	$("#mobile_pid").html("");
+	                	var pid_html = '';
+	                	//修改手机型号
+	                	$.each(data.data,function(){
+	                		pid_html +="<option value='"+this.mobile_pid+"'>"+this.name+"</option>";
+	                	})
+	                	$("#mobile_pid").html(pid_html);
+	                } 
+	            }
+			});
+		});
+		
+		
+	});
+</script>
+</body>
+</html>
