@@ -68,6 +68,9 @@ class Repair extends MobileBase {
 	    $data['address'] = I("post.address");
 	    $data['addtime'] = time();
 	    $data['status'] = 0;
+	    if (!$data['mobile'] && !$data['address']){
+	    	$this->error("预约失败,请稍后重试");
+	    }
 	    $result = M("repair_pc")->add($data);
 	    if($result){
 	        $this->success("预约成功");
@@ -89,11 +92,40 @@ class Repair extends MobileBase {
 	    $data['addtime'] = time();
 	    $data['status'] = 0;
 	    $result = M("repair_mobile")->add($data);
+	    if (!$data['mobile'] && !$data['address']){
+	    	$this->error("预约失败,请稍后重试");
+	    }
 	    if($result){
 	        $this->success("预约成功");
 	    }else{
 	        $this->error("预约失败,请稍后重试");
 	    }
+	}
+	
+	//查询维修价格
+	public function get_repair_price() {
+		if(IS_AJAX){
+			$where['type'] = I("post.type");
+			$where['problems_id'] = I("post.problems_id");
+			if($where['type'] > 2){
+				$where['mobile_bid'] = I("post.mobile_bid");
+				$where['mobile_pid'] = I("post.mobile_pid");
+			}
+			$result = M("repair_price")->where($where)->find();
+			if($result){
+				$back['status'] = 1;
+				$back['msg'] = "查询成功";
+				$back['data'] = $result['price'];
+			}else{
+				$back['status'] = 0;
+				$back['msg'] = "查询失败";
+				$back['data'] = null;
+			}
+			echo json_encode($back);
+		}else{
+			echo "非法访问";
+		}
+		exit();
 	}
 	
 }

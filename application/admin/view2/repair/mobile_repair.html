@@ -50,10 +50,10 @@
 							<div style="text-align: center; width: 150px;" class="">问题描述</div>
 						</th>
 						<th align="center" abbr="article_show" axis="col5" class="">
-							<div style="text-align: center; width: 100px;" class="">手机品牌</div>
+							<div style="text-align: center; width: 80px;" class="">手机品牌</div>
 						</th>
 						<th align="center" abbr="article_show" axis="col5" class="">
-							<div style="text-align: center; width: 100px;" class="">手机型号</div>
+							<div style="text-align: center; width: 80px;" class="">手机型号</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
 							<div style="text-align: center; width: 200px;" class="">地址</div>
@@ -63,6 +63,9 @@
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
 							<div style="text-align: center; width: 200px;" class="">备注</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class="">预约收费</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
 							<div style="text-align: center; width: 50px;" class="">是否处理</div>
@@ -112,10 +115,10 @@
 								<div style="text-align: center; width: 150px;">{$vo.problems_name}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 100px;">{$vo.brand_name}</div>
+								<div style="text-align: center; width: 80px;">{$vo.brand_name}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 100px;">{$vo.product_name}</div>
+								<div style="text-align: center; width: 80px;">{$vo.product_name}</div>
 							</td>
 							<td align="left" class="">
 								<div style="text-align: center; width: 200px;">{$vo.address}</div>
@@ -125,6 +128,9 @@
 							</td>
 							<td align="left" class="">
 								<div style="text-align: center; width: 200px;">{$vo.des}</div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: center; width: 100px; color:red">{$vo.price|default="0.00"}</div>
 							</td>
 							<td align="left" class="">
 								 <div style="text-align: center; width: 70px;">

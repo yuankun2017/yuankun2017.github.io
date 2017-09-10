@@ -16,7 +16,11 @@ class Repair extends Base{
 	                       ->field("rp.*,rpb.name")
 	                       ->order("repair_pcid desc")
 	                       ->select();
-	    
+	    foreach ($pc_repair_list as $key=>$value){
+	    	//查询服务费用
+	    	$repair_price = M("repair_price")->where(array("type"=>$value['type'],"problems_id"=>$value['problems_id']))->find();
+	    	$pc_repair_list[$key]['price'] = $repair_price['price'];
+	    }
 	    $this->assign("pc_repair_list",$pc_repair_list);
 	    $this->assign("dataCount",count($pc_repair_list));
         return $this->fetch();
@@ -51,6 +55,11 @@ class Repair extends Base{
 	    ->field("rm.*,rmb.name as brand_name,rmp.name as product_name,rpb.name as problems_name")
 	    ->order("repair_mid desc")
 	    ->select();
+	    foreach ($pc_repair_list as $key=>$value){
+	    	//查询服务费用
+	    	$repair_price = M("repair_price")->where(array("type"=>$value['type'],"problems_id"=>$value['problems_id'],"mobile_bid"=>$value['mobile_bid'],"mobile_pid"=>$value['mobile_pid']))->find();
+	    	$pc_repair_list[$key]['price'] = $repair_price['price'];
+	    }
 	     
 	    $this->assign("pc_repair_list",$pc_repair_list);
 	    $this->assign("dataCount",count($pc_repair_list));
@@ -108,11 +117,58 @@ class Repair extends Base{
 	}
 	
 	public function brand(){
+		//查询所有手机品牌
+		$mobile_brand_list = M("repair_mobilebrand")->order("type desc")->select();
+		$this->assign("mobile_brand_list",$mobile_brand_list);
+		$this->assign("dataCount",count($mobile_brand_list));
+		return $this->fetch();
+	}
 	
+	
+	//手机品牌增改
+	public function brand_info()
+	{
+		$act = I('GET.act', 'add');
+		$mobile_bid = I('get.mobile_bid');
+		$repair_mobilebrand_info = array();
+		if ($mobile_bid) {
+			$repair_mobilebrand_info = D('repair_mobilebrand')->where('mobile_bid=' . $mobile_bid)->find();
+			$act = 'edit';
+		}
+		$this->assign('info', $repair_mobilebrand_info);
+		$this->assign('act', $act);
+		return $this->fetch();
 	}
 	
 	public function product(){
+		//查询所有手机型号
+		$mobile_product_list = M("repair_mobileproduct")
+								->alias("rmp")
+								->join("tp_repair_mobilebrand rmb","rmp.mobile_bid = rmb.mobile_bid")
+								->field("rmp.*,rmb.name as brand_name")
+								->order("mobile_bid desc")
+								->select();
+		$this->assign("mobile_product_list",$mobile_product_list);
+		$this->assign("dataCount",count($mobile_product_list));
+		return $this->fetch();
+	}
 	
+	//手机型号增改
+	public function product_info()
+	{
+		$act = I('GET.act', 'add');
+		$mobile_pid = I('get.mobile_pid');
+		$repair_mobileproduct_info = array();
+		if ($mobile_pid) {
+			$repair_mobileproduct_info = D('repair_mobileproduct')->where('mobile_pid=' . $mobile_pid)->find();
+			$act = 'edit';
+		}
+		//查询所有品牌
+		$brand_list = M("repair_mobilebrand")->order("type desc")->select();
+		$this->assign("brand_list",$brand_list);
+		$this->assign('info', $repair_mobileproduct_info);
+		$this->assign('act', $act);
+		return $this->fetch();
 	}
 	
 	//对电脑维护的操作
@@ -283,7 +339,18 @@ class Repair extends Base{
 	    echo json_encode($back);
 	    exit();
 	}
-	
+	//查询对应问题
+	public function get_problems() {
+		//手机品牌
+		$type = I("type");
+		//手机型号
+		$problems_list = M("repair_problems")->where("type",$type)->select();
+		$back['status'] = 1;
+		$back['msg'] = "查询成功";
+		$back['data'] = $problems_list;
+		echo json_encode($back);
+		exit();
+	}
 	
 	//对维修问题的操作
 	public function  repair_problems_handle(){
@@ -293,7 +360,7 @@ class Repair extends Base{
 	            case "add":
 	                $data['type'] = I("post.type")?I("post.type"):1;
 	                $data['name'] = I("post.problems_name");
-	                $data['price'] = I("post.price");
+// 	                $data['price'] = I("post.price");
 	                $result = M("repair_problems")->add($data);
 	                if($result){
 	                    $back['status'] = 1;
@@ -309,7 +376,7 @@ class Repair extends Base{
 	                $data['problems_id'] = I("post.problems_id");
                     $data['type'] = I("post.type")?I("post.type"):1;
 	                $data['name'] = I("post.problems_name");
-	                $data['price'] = I("post.price");
+// 	                $data['price'] = I("post.price");
 	                $result = M("repair_problems")->where("problems_id",$data['problems_id'])->save($data);
 	                if($result){
 	                    $back['status'] = 1;
@@ -344,4 +411,247 @@ class Repair extends Base{
 	    }
 	    exit();
 	}
+	
+	
+	//对手机品牌的操作
+	public function  repair_mobile_brand_handle(){
+		if(IS_AJAX){
+			$act = I("act");
+			switch($act){
+				case "add":
+					$data['type'] = I("post.type")?I("post.type"):1;
+					$data['name'] = I("post.problems_name");
+					$result = M("repair_mobilebrand")->add($data);
+					if($result){
+						$back['status'] = 1;
+						$back['msg'] = "操作成功";
+						$back['data'] = $result;
+					}else{
+						$back['status'] = 0;
+						$back['msg'] = "操作失败";
+						$back['data'] = null;
+					}
+					break;
+				case "edit":
+					$data['mobile_bid'] = I("post.mobile_bid");
+					$data['type'] = I("post.type")?I("post.type"):1;
+					$data['name'] = I("post.problems_name");
+					$result = M("repair_mobilebrand")->where("mobile_bid",$data['mobile_bid'])->save($data);
+					if($result){
+						$back['status'] = 1;
+						$back['msg'] = "操作成功";
+						$back['data'] = $result;
+					}else{
+						$back['status'] = 0;
+						$back['msg'] = "操作失败";
+						$back['data'] = null;
+					}
+					break;
+				case "del":
+					$mobile_bid = I("mobile_bid");
+					$result = M("repair_mobilebrand")->where("mobile_bid",$mobile_bid)->delete();
+					break;
+				default:
+					$result = 0;
+					break;
+			}
+			if($result){
+				$back['status'] = 1;
+				$back['msg'] = "操作成功";
+				$back['data'] = $result;
+			}else{
+				$back['status'] = 0;
+				$back['msg'] = "操作失败";
+				$back['data'] = null;
+			}
+			echo json_encode($back);
+		}else{
+			echo "非法访问";
+		}
+		exit();
+	}
+	
+	
+	//对手机型号的操作
+	public function  repair_mobile_product_handle(){
+		if(IS_AJAX){
+			$act = I("act");
+			switch($act){
+				case "add":
+					$data['mobile_bid'] = I("post.mobile_bid");
+					$data['name'] = I("post.product_name");
+					$result = M("repair_mobileproduct")->add($data);
+					if($result){
+						$back['status'] = 1;
+						$back['msg'] = "操作成功";
+						$back['data'] = $result;
+					}else{
+						$back['status'] = 0;
+						$back['msg'] = "操作失败";
+						$back['data'] = null;
+					}
+					break;
+				case "edit":
+					$data['mobile_pid'] = I("post.mobile_pid");
+					$data['mobile_bid'] = I("post.mobile_bid");
+					$data['name'] = I("post.product_name");
+					$result = M("repair_mobileproduct")->where("mobile_pid",$data['mobile_pid'])->save($data);
+					if($result){
+						$back['status'] = 1;
+						$back['msg'] = "操作成功";
+						$back['data'] = $result;
+					}else{
+						$back['status'] = 0;
+						$back['msg'] = "操作失败";
+						$back['data'] = null;
+					}
+					break;
+				case "del":
+					$mobile_pid = I("mobile_pid");
+					$result = M("repair_mobileproduct")->where("mobile_pid",$mobile_pid)->delete();
+					break;
+				default:
+					$result = 0;
+					break;
+			}
+			if($result){
+				$back['status'] = 1;
+				$back['msg'] = "操作成功";
+				$back['data'] = $result;
+			}else{
+				$back['status'] = 0;
+				$back['msg'] = "操作失败";
+				$back['data'] = null;
+			}
+			echo json_encode($back);
+		}else{
+			echo "非法访问";
+		}
+		exit();
+	}
+	
+	//维修服务价格
+	public function repair_price() {
+		//查询所有价格
+		$repair_price_list = M("repair_price")
+							->alias("rp")
+							->join("tp_repair_problems rpb","rp.problems_id = rpb.problems_id")
+							->join("tp_repair_mobilebrand rmb","rp.mobile_bid = rmb.mobile_bid","left")
+							->join("tp_repair_mobileproduct rmp","rp.mobile_pid = rmp.mobile_pid","left")
+							->field("rp.*,rpb.name as problems_name,rmb.name as brand_name,rmp.name as product_name")
+							->order("type")
+							->select();
+		$this->assign("repair_price_list",$repair_price_list);
+		$this->assign("dataCount",count($repair_price_list));
+		return $this->fetch();
+	}
+	
+	
+	//对维护价格操作
+	public function  repair_price_handle(){
+		if(IS_AJAX){
+			$act = I("act");
+			switch($act){
+				case "add":
+					$data['type'] = I("post.type");
+					$data['problems_id'] = I("post.problems_id");
+					$data['price'] = I("post.price");
+					if($data['type'] > 2){
+						$data['mobile_bid'] = I("post.mobile_bid");
+						$data['mobile_pid'] = I("post.mobile_pid");
+					}
+					$result = M("repair_price")->add($data);
+					if($result){
+						$back['status'] = 1;
+						$back['msg'] = "操作成功";
+						$back['data'] = $result;
+					}else{
+						$back['status'] = 0;
+						$back['msg'] = "操作失败";
+						$back['data'] = null;
+					}
+					break;
+				case "edit":
+					$data['repair_price_id'] = I("post.repair_price_id");
+					$data['type'] = I("post.type");
+					$data['problems_id'] = I("post.problems_id");
+					$data['price'] = I("post.price");
+					if($data['type'] > 2){
+						$data['mobile_bid'] = I("post.mobile_bid");
+						$data['mobile_pid'] = I("post.mobile_pid");
+					}
+					$result = M("repair_price")->where("repair_price_id",$data['repair_price_id'])->save($data);
+					if($result){
+						$back['status'] = 1;
+						$back['msg'] = "操作成功";
+						$back['data'] = $result;
+					}else{
+						$back['status'] = 0;
+						$back['msg'] = "操作失败";
+						$back['data'] = null;
+					}
+					break;
+				case "del":
+					$repair_price_id = I("repair_price_id");
+					$result = M("repair_price")->where("repair_price_id",$repair_price_id)->delete();
+					break;
+				default:
+					$result = 0;
+					break;
+			}
+			if($result){
+				$back['status'] = 1;
+				$back['msg'] = "操作成功";
+				$back['data'] = $result;
+			}else{
+				$back['status'] = 0;
+				$back['msg'] = "操作失败";
+				$back['data'] = null;
+			}
+			echo json_encode($back);
+		}else{
+			echo "非法访问";
+		}
+		exit();
+	}
+	
+	//维修费用增改
+	public function repair_price_info()
+	{
+		$act = I('GET.act', 'add');
+		$repair_price_id = I('get.repair_price_id');
+		$repair_price_info = array();
+		if ($repair_price_id) {
+			$repair_price_info = M('repair_price')->where('repair_price_id=' . $repair_price_id)->find();
+			//查询所有品牌
+			$brand_list  = M("repair_mobilebrand")->where("type",$repair_price_info['type'])->select();
+			//查询该品牌下的所有型号
+			$product_list = M("repair_mobileproduct")->where("mobile_bid",$repair_price_info['mobile_bid'])->select();
+			//查询对应问题
+			if($repair_price_info['type'] < 3){
+				//电脑问题
+				$problems = M("repair_problems")->where("type",1)->select();
+			}else{//手机问题
+				$problems = M("repair_problems")->where("type",2)->select();
+			}
+			$act = 'edit';
+		}else{
+			//查询所有品牌
+			$brand_list  = M("repair_mobilebrand")->where("type",3)->select();
+			//查询第一个品牌下的所有型号
+			$product_list = M("repair_mobileproduct")->where("mobile_bid",$brand_list[0]['mobile_bid'])->select();
+			//电脑问题
+			$problems = M("repair_problems")->where("type",1)->select();
+		}
+		
+		
+		$this->assign("product_list",$product_list);
+		$this->assign("brand_list",$brand_list);
+		$this->assign("problems",$problems);
+		$this->assign("brand_list",$brand_list);
+		$this->assign('info', $repair_price_info);
+		$this->assign('act', $act);
+		return $this->fetch();
+	}
+
 }

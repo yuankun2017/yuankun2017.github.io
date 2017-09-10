@@ -59,6 +59,9 @@
 							<div style="text-align: center; width: 200px;" class="">备注</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class="">预约收费</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
 							<div style="text-align: center; width: 50px;" class="">是否处理</div>
 						</th>
 						<th align="left" axis="col1" class="handle">
@@ -113,6 +116,9 @@
 							</td>
 							<td align="left" class="">
 								<div style="text-align: center; width: 200px;">{$vo.des}</div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: center; width: 100px; color:red">{$vo.price|default="0.00"}</div>
 							</td>
 							<td align="left" class="">
 								 <div style="text-align: center; width: 70px;">

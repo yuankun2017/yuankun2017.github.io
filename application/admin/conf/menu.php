@@ -113,6 +113,7 @@ return	array(
     	        array('name' => '预约问题管理', 'act'=>'problems', 'op'=>'Repair'),
     	        array('name' => '手机品牌管理', 'act'=>'brand', 'op'=>'Repair'),
     	        array('name' => '手机型号管理', 'act'=>'product', 'op'=>'Repair'),
+    	    	array('name' => '预约收费管理', 'act'=>'repair_price', 'op'=>'Repair'),
     	    )),
 	)),
     

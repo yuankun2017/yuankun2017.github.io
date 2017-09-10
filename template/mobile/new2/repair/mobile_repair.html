@@ -66,11 +66,11 @@
 								</volist>
 							</ul>
 							<input type="hidden" name="problems_id" id="problems_id" value="{$problems[0]['problems_id']}">
-							<h5 class="mui-content-padded">预估服务费用:¥<sapn id="price" style="color:red;">{$problems[0]['price']}</sapn></h5>
+							
 
 							<h5 class="mui-content-padded">请选择手机型号:</h5>
 							<button id='showCityPicker' class="mui-btn mui-btn-block" type='button'>点击选择</button>
-							<div id='cityResult' class="ui-alert"></div>
+							<h5 class="mui-content-padded" style="color:red;display:none" id="price_h5">预估服务费用:¥<sapn id="price">50</sapn></h5>
 							<input type="hidden" name="mobile_bid" id="mobile_bid" value="">
 							<input type="hidden" name="mobile_pid" id="mobile_pid" value="">
 							<h5 class="mui-content-padded">备注信息:</h5>
@@ -84,16 +84,45 @@
 			</div>
 		</div>
 		<script>
+		function get_mobile_repair_price(type,problems_id,mobile_bid,mobile_pid){
+			$.ajax({
+		 		type: "POST",
+	            url: "{:U('Repair/get_repair_price')}",
+	            data: {"type":type,"problems_id":problems_id,"mobile_bid":mobile_bid,"mobile_pid":mobile_pid},
+	            dataType: "json",
+	            success: function (data) {
+	                if (data.status == 1) {
+						$("#price_h5").css("display","block");
+						$("#price").html(data.data);
+	                } else{
+	                	$("#price_h5").css("display","none");
+	                }
+	            }
+			});
+			return true;
+		}
 		$(function(){
 			$("#mobile1").click(function(){
+				var mobile_bid = $("#mobile_bid").val();
+				var mobile_pid = $("#mobile_pid").val();
+				var problems_id = $("#problems_id").val();
+				get_mobile_repair_price(3,problems_id,mobile_bid,mobile_pid);
 				$("#mobile_type").val("3")
 			});
 			$("#mobile2").click(function(){
+				var mobile_bid = $("#mobile_bid").val();
+				var mobile_pid = $("#mobile_pid").val();
+				var problems_id = $("#problems_id").val();
+				get_mobile_repair_price(4,problems_id,mobile_bid,mobile_pid);
 				$("#mobile_type").val("4")
 			});
 			$(".mobile_problems").click(function(){
-				$("#problems_id").val($(this).attr("problems_id"));
-				$("#price").text($(this).attr("price"));
+				var mobile_bid = $("#mobile_bid").val();
+				var mobile_pid = $("#mobile_pid").val();
+				var type = $("#mobile_type").val();
+				var problems_id = $(this).attr("problems_id");
+				get_mobile_repair_price(type,problems_id,mobile_bid,mobile_pid);
+				$("#problems_id").val(problems_id);
 			});
 			$("#btn_ok").click(function(){
 				var mobile = $("#mobile").val();
@@ -127,6 +156,7 @@
 					var mobile_pid = doc.getElementById('mobile_pid');
 					var showCityPicker = doc.getElementById('showCityPicker');
 					var mobile_type = doc.getElementById('mobile_type');
+					var problems_id = doc.getElementById('problems_id');
 					document.querySelector('.mui-table-view.mui-table-view-radio').addEventListener('selected',function(e){
 						if(e.detail.el.id == "mobile1"){
 							brandPicker.setData({$android_result});
@@ -139,6 +169,7 @@
 							mobile_bid.value = items[0].value;
 							mobile_pid.value = items[1].value;
 							showCityPicker.innerText = "你选择的手机型号是:" + items[0].text + " " + items[1].text;
+							get_mobile_repair_price(mobile_type.value,problems_id.value,items[0].value,items[1].value);
 							//返回 false 可以阻止选择框的关闭
 							//return false;
 						});
