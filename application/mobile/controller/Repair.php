@@ -4,7 +4,19 @@
  */ 
 namespace app\mobile\controller;
 use think\Request;
+use app\common\util\WechatUtil;
 class Repair extends MobileBase {
+    
+    private $wechatObj;
+    
+    public function __construct()
+    {
+        $this->wx_user = M('wx_user')->find();
+        if ($this->wx_user['wait_access'] == 0) {
+            exit($_GET["echostr"]);
+        }
+        $this->wechatObj = new WechatUtil($this->wx_user);
+    }
     //手机预约维护
 	public function mobile_repair() {
 	    //查询所有手机维修问题
@@ -69,13 +81,16 @@ class Repair extends MobileBase {
 	    $data['addtime'] = time();
 	    $data['status'] = 0;
 	    if (!$data['mobile'] && !$data['address']){
-	    	$this->error("预约失败,请稍后重试",U("/mobile/repair/pc_repair"));
+	    	$this->error("预约失败,请稍后重试");
 	    }
 	    $result = M("repair_pc")->add($data);
 	    if($result){
-	        $this->success("预约成功",U("/mobile/repair/pc_repair"));
+	        $smsLogic = new \app\common\logic\SmsLogic;
+	        $param = "{\"type\":\"笔记本\",\"address\":\"测试测试\",\"phone\":\"15882209848\"}";
+	        $result = $smsLogic->sendSmsByAliyun("15882209848","毅腾科技",$param,"SMS_94690146");
+	        $this->success("预约成功");
 	    }else{
-	        $this->error("预约失败,请稍后重试",U("/mobile/repair/pc_repair"));
+	        $this->error("预约失败,请稍后重试");
 	    }
 	}
 	
@@ -93,12 +108,14 @@ class Repair extends MobileBase {
 	    $data['status'] = 0;
 	    $result = M("repair_mobile")->add($data);
 	    if (!$data['mobile'] && !$data['address']){
-	    	$this->error("预约失败,请稍后重试",U("/mobile/repair/mobile_repair"));
+	    	$this->error("预约失败,请稍后重试");
 	    }
 	    if($result){
-	        $this->success("预约成功",U("/mobile/repair/mobile_repair"));
+	        //发送微信成功消息
+
+	        $this->success("预约成功");
 	    }else{
-	        $this->error("预约失败,请稍后重试",U("/mobile/repair/mobile_repair"));
+	        $this->error("预约失败,请稍后重试");
 	    }
 	}
 	
