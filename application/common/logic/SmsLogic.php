@@ -106,7 +106,7 @@ class SmsLogic
      * @param $code    验证码
      * @return bool    短信发送成功返回true失败返回false
      */
-    private function sendSmsByAlidayu($mobile, $smsSign, $smsParam, $templateCode)
+    public function sendSmsByAlidayu($mobile, $smsSign, $smsParam, $templateCode)
     {
         //时区设置：亚洲/上海
         date_default_timezone_set('Asia/Shanghai');
@@ -159,7 +159,7 @@ class SmsLogic
      * @param $code    验证码
      * @return bool    短信发送成功返回true失败返回false
      */
-    private function sendSmsByAliyun($mobile, $smsSign, $smsParam, $templateCode)
+    public function sendSmsByAliyun($mobile, $smsSign, $smsParam, $templateCode)
     {
         include_once './vendor/aliyun-php-sdk-core/Config.php';
         include_once './vendor/Dysmsapi/Request/V20170525/SendSmsRequest.php';

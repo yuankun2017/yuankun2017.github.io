@@ -4,7 +4,19 @@
  */ 
 namespace app\mobile\controller;
 use think\Request;
+use app\common\util\WechatUtil;
 class Repair extends MobileBase {
+    
+    private $wechatObj;
+    
+    public function __construct()
+    {
+        $this->wx_user = M('wx_user')->find();
+        if ($this->wx_user['wait_access'] == 0) {
+            exit($_GET["echostr"]);
+        }
+        $this->wechatObj = new WechatUtil($this->wx_user);
+    }
     //手机预约维护
 	public function mobile_repair() {
 	    //查询所有手机维修问题
@@ -73,6 +85,9 @@ class Repair extends MobileBase {
 	    }
 	    $result = M("repair_pc")->add($data);
 	    if($result){
+	        $smsLogic = new \app\common\logic\SmsLogic;
+	        $param = "{\"type\":\"笔记本\",\"address\":\"测试测试\",\"phone\":\"15882209848\"}";
+	        $result = $smsLogic->sendSmsByAliyun("15882209848","毅腾科技",$param,"SMS_94690146");
 	        $this->success("预约成功");
 	    }else{
 	        $this->error("预约失败,请稍后重试");
@@ -96,6 +111,8 @@ class Repair extends MobileBase {
 	    	$this->error("预约失败,请稍后重试");
 	    }
 	    if($result){
+	        //发送微信成功消息
+
 	        $this->success("预约成功");
 	    }else{
 	        $this->error("预约失败,请稍后重试");
