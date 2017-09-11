@@ -69,13 +69,13 @@ class Repair extends MobileBase {
 	    $data['addtime'] = time();
 	    $data['status'] = 0;
 	    if (!$data['mobile'] && !$data['address']){
-	    	$this->error("预约失败,请稍后重试");
+	    	$this->error("预约失败,请稍后重试",U("/mobile/repair/pc_repair"));
 	    }
 	    $result = M("repair_pc")->add($data);
 	    if($result){
-	        $this->success("预约成功");
+	        $this->success("预约成功",U("/mobile/repair/pc_repair"));
 	    }else{
-	        $this->error("预约失败,请稍后重试");
+	        $this->error("预约失败,请稍后重试",U("/mobile/repair/pc_repair"));
 	    }
 	}
 	
@@ -93,12 +93,12 @@ class Repair extends MobileBase {
 	    $data['status'] = 0;
 	    $result = M("repair_mobile")->add($data);
 	    if (!$data['mobile'] && !$data['address']){
-	    	$this->error("预约失败,请稍后重试");
+	    	$this->error("预约失败,请稍后重试",U("/mobile/repair/mobile_repair"));
 	    }
 	    if($result){
-	        $this->success("预约成功");
+	        $this->success("预约成功",U("/mobile/repair/mobile_repair"));
 	    }else{
-	        $this->error("预约失败,请稍后重试");
+	        $this->error("预约失败,请稍后重试",U("/mobile/repair/mobile_repair"));
 	    }
 	}
 	

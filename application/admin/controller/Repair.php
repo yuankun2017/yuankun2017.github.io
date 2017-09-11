@@ -50,8 +50,8 @@ class Repair extends Base{
 	    $pc_repair_list = M("repair_mobile")
 	    ->alias("rm")
 	    ->join("tp_repair_problems rpb","rpb.problems_id = rm.problems_id")
-	    ->join("tp_repair_mobilebrand rmb","rm.mobile_bid = rmb.mobile_bid")
-	    ->join("tp_repair_mobileproduct rmp","rm.mobile_pid = rmp.mobile_pid")
+	    ->join("tp_repair_mobilebrand rmb","rm.mobile_bid = rmb.mobile_bid","left")
+	    ->join("tp_repair_mobileproduct rmp","rm.mobile_pid = rmp.mobile_pid","left")
 	    ->field("rm.*,rmb.name as brand_name,rmp.name as product_name,rpb.name as problems_name")
 	    ->order("repair_mid desc")
 	    ->select();
