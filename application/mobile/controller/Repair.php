@@ -7,27 +7,17 @@ use think\Request;
 use app\common\util\WechatUtil;
 class Repair extends MobileBase {
     
-    private $wechatObj;
-    
-    public function __construct()
-    {
-        $this->wx_user = M('wx_user')->find();
-        if ($this->wx_user['wait_access'] == 0) {
-            exit($_GET["echostr"]);
-        }
-        $this->wechatObj = new WechatUtil($this->wx_user);
-    }
     //手机预约维护
 	public function mobile_repair() {
 	    //查询所有手机维修问题
 	    $problems = M("repair_problems")->where("type",2)->select();
 	    //查询所有安卓手机品牌
-	    $android_brand = M("repair_mobilebrand")->where("type",3)->select();
+	    $android_brand = M("repair_mobilebrand")->where("type",3)->order("sort")->select();
 	    $android_result = array();
 	    //组装安卓型号数组
 	    foreach ($android_brand as $key=>$value){
 	        //查询该品牌下的所有型号
-	        $android_model = M("repair_mobileproduct")->where("mobile_bid",$value['mobile_bid'])->select();
+	        $android_model = M("repair_mobileproduct")->where("mobile_bid",$value['mobile_bid'])->order("sort")->select();
 	        if($android_model){
 	            $android_model_array = array();
 	            foreach ($android_model as $k=>$v){
@@ -39,12 +29,12 @@ class Repair extends MobileBase {
 	        }
 	    }
 	    //查询所有苹果手机品牌
-	    $apple_brand = M("repair_mobilebrand")->where("type",4)->select();
+	    $apple_brand = M("repair_mobilebrand")->where("type",4)->order("sort")->select();
 	    $apple_result = array();
 	    //组装苹果型号数组
 	    foreach ($apple_brand as $key=>$value){
 	        //查询该品牌下的所有型号
-	        $apple_model = M("repair_mobileproduct")->where("mobile_bid",$value['mobile_bid'])->select();
+	        $apple_model = M("repair_mobileproduct")->where("mobile_bid",$value['mobile_bid'])->order("sort")->select();
 	        if($apple_model){
 	            $apple_model_array = array();
 	            foreach ($apple_model as $k=>$v){
@@ -86,8 +76,16 @@ class Repair extends MobileBase {
 	    $result = M("repair_pc")->add($data);
 	    if($result){
 	        $smsLogic = new \app\common\logic\SmsLogic;
-	        $param = "{\"type\":\"笔记本\",\"address\":\"测试测试\",\"phone\":\"15882209848\"}";
-	        $result = $smsLogic->sendSmsByAliyun("15882209848","毅腾科技",$param,"SMS_94690146");
+	        $sms_admin_phone = M("config")->where(array("name"=>"sms_admin_phone","inc_type"=>"sms"))->find();
+	        if($data['type'] == 1){
+	        	$type_name="笔记本";
+	        }else{
+	        	$type_name="台式机";
+	        }
+	        $address = $data['address'];
+	        $phone = $data['mobile'];
+	        $param = "{\"type\":\"$type_name\",\"address\":\"$address\",\"phone\":\"$phone\"}";
+	        $result = $smsLogic->sendSmsByAliyun($sms_admin_phone['value'],"毅腾科技",$param,"SMS_94690146");
 	        $this->success("预约成功");
 	    }else{
 	        $this->error("预约失败,请稍后重试");
@@ -111,8 +109,18 @@ class Repair extends MobileBase {
 	    	$this->error("预约失败,请稍后重试");
 	    }
 	    if($result){
-	        //发送微信成功消息
-
+	        //发送短信成功消息
+	    	$smsLogic = new \app\common\logic\SmsLogic;
+	    	$sms_admin_phone = M("config")->where(array("name"=>"sms_admin_phone","inc_type"=>"sms"))->find();
+	    	if($data['type'] == 3){
+	    		$type_name="安卓手机";
+	    	}else{
+	    		$type_name="苹果手机";
+	    	}
+	    	$address = $data['address'];
+	    	$phone = $data['mobile'];
+	    	$param = "{\"type\":\"$type_name\",\"address\":\"$address\",\"phone\":\"$phone\"}";
+	    	$result = $smsLogic->sendSmsByAliyun($sms_admin_phone['value'],"毅腾科技",$param,"SMS_94690146");
 	        $this->success("预约成功");
 	    }else{
 	        $this->error("预约失败,请稍后重试");
