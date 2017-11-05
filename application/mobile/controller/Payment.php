@@ -25,6 +25,7 @@ class Payment extends MobileBase {
         parent::__construct();      
         // tpshop 订单支付提交
         $pay_radio = $_REQUEST['pay_radio'];
+
         if(!empty($pay_radio)) 
         {                         
             $pay_radio = parse_url_param($pay_radio);

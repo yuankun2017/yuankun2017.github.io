@@ -50,6 +50,7 @@ class Index extends MobileBase {
         $this->assign('start_time',$start_time);
         $this->assign('end_time',$end_time);
         $this->assign('favourite_goods',$favourite_goods);
+       
         return $this->fetch();
     }
 

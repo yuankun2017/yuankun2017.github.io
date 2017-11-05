@@ -72,6 +72,28 @@
         });
     }
 
+
+
+    /*
+    *删除订单
+     */
+    $("body").on("click",".del",function(){
+        var order_id = $(this).attr("data");
+        $.ajax({
+            type: 'post',
+            data: {"order_id":order_id},
+            dataType:'JSON',
+            url:"/index.php?m=Mobile&c=User&a=del_order",
+            success:function(data){
+                layer.open({content:data.msg,time:2});
+                location.reload();
+            },
+            error:function(){
+                layer.open({content:'网络失败，请刷新页面后重试',time:3});
+            },
+        });
+    });
+   
     /**
      * 确定收货
      */

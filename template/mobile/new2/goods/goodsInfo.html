@@ -345,10 +345,10 @@
         <div class="fr">
             <ul>
                 <li class="o">
-                    <a class="pb_plusshopcar button active_button " href="javascript:void(0);" onClick="AjaxAddCart({$goods.goods_id},1,0);"> 加入购物车</a>
+                    <a class="pb_plusshopcar button active_button " href="javascript:void(0);" onClick="check_guige();"> 加入购物车</a>
                 </li>
                 <li class="r">
-                    <a style="display:block;" href="javascript:void(0);"  onclick="AjaxAddCart({$goods.goods_id},1,1);">立即购买</a>
+                    <a style="display:block;" href="javascript:void(0);"  onclick="check_guige1();">立即购买</a>
                 </li>
             </ul>
         </div>
@@ -578,7 +578,7 @@ $(document).ready(function(){
         $('#buy_goods_form .choicsel').each(function() {
             // 先默认每组的第一个单选按钮添加样式
             $(this).find('a').first().addClass('red');
-            sel();
+            // sel();
         });
 
         /**
@@ -641,7 +641,7 @@ $(document).ready(function(){
         });
 
         //在已选栏中显示默认选择属性，数量
-        sel();
+        // sel();
 
         /**
          * 更新商品价格
@@ -661,6 +661,27 @@ $(document).ready(function(){
         //更新商品价格
         get_goods_price();
     }
+
+    function check_guige(){
+        if($(".sel").html() == ""){
+            $('.choise_num').click();
+        }else{
+            AjaxAddCart({$goods.goods_id},1,0);
+        }
+        
+    }
+
+
+    function check_guige1(){
+        if($(".sel").html() == ""){
+            $('.choise_num').click();
+        }else{
+            AjaxAddCart({$goods.goods_id},1,1);
+        }
+        
+    }
+
+    
 
     function get_goods_price()
     {

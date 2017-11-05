@@ -26,6 +26,8 @@ class Goods extends MobileBase {
      * 分类列表显示
      */
     public function categoryList(){
+        $index = I('index',0);
+        $this->assign("index",$index);
         return $this->fetch();
     }
 

@@ -37,9 +37,9 @@ class MobileBase extends Controller {
         
         $wx_qr = M('wx_user')->cache(true)->value('qr'); //获取微信配置
         $this->assign('wx_qr',$wx_qr);
-        
         //微信浏览器
         if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
+
             $user_temp = session('user');
             if (isset($user_temp['user_id']) && $user_temp['user_id']) {
                 $user = M('users')->where("user_id", $user_temp['user_id'])->find();
@@ -48,6 +48,7 @@ class MobileBase extends Controller {
                     session('user', null);
                 }
             }
+           
             if (empty($_SESSION['openid'])) {
                 $this->weixin_config = M('wx_user')->find(); //获取微信配置
                 $this->assign('wechat_config', $this->weixin_config); 
@@ -73,7 +74,7 @@ class MobileBase extends Controller {
                 }
             }
         }
-         
+        
         $this->public_assign();
     }
     

@@ -153,4 +153,10 @@ class Repair extends MobileBase {
 		exit();
 	}
 	
+	
+	//售后查询
+	public function order_check_info(){
+		return $this->fetch();
+	}
+	
 }

@@ -53,16 +53,20 @@
                     <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$list['order_id']))}">立即付款</a>
                 </if>
                 <if condition="$list.cancel_btn eq 1">
-                    <a class="shop-rebuy " onClick="cancel_order({$list.order_id})">取消订单</a>
+                    <a class="shop-rebuy " onClick="cancel_orssder({$list.order_id})">取消订单</a>
                 </if>
                 <if condition="$list.receive_btn eq 1">
                     <a class="shop-rebuy paysoon" onclick="orderConfirm({$list.order_id})">确认收货</a>
                 </if>
                 <if condition="$list.comment_btn eq 1">
                     <a class="shop-rebuy" href="{:U('/Mobile/User/comment')}">评价</a>
+                    <a class="shop-rebuy del"   data="{$list.order_id}">删除订单</a>
                 </if>
                 <if condition="$list.shipping_btn eq 1">
                     <a class="shop-rebuy" class="shop-rebuy" href="{:U('Mobile/User/express',array('order_id'=>$list['order_id']))}">查看物流</a>
+                </if>
+                <if condition="$list.order_status eq 4">
+                    <a class="shop-rebuy del"   data="{$list.order_id}">删除订单</a>
                 </if>
             </div>
         </div>

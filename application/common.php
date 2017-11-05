@@ -1137,6 +1137,7 @@ function calculate_price($user_id = 0, $order_goods, $shipping_code = '', $shipp
             $result['order_integral'] +=  ceil($order_goods[$key]['member_goods_price'] * $use_percent_point);
         }
 
+
         $order_goods[$key]['goods_fee'] = $val['goods_num'] * $val['member_goods_price'];    // 小计
         $order_goods[$key]['store_count'] = getGoodNum($val['goods_id'], $val['spec_key']); // 最多可购买的库存数量
         if ($order_goods[$key]['store_count'] <= 0)

@@ -18,6 +18,7 @@ if (extension_loaded('zlib')){
     ob_end_clean();
     ob_start('ob_gzhandler');
 }
+
 // 检测PHP环境
 if(version_compare(PHP_VERSION,'5.4.0','<'))  die('require PHP > 5.4.0 !');
 //error_reporting(E_ALL ^ E_NOTICE);//显示除去 E_NOTICE 之外的所有错误信息
@@ -48,5 +49,6 @@ define('SERIALNUMBER','20160520065303oCWIoa');
 define('APP_PATH', __DIR__ . '/application/');
 // 定义时间
 define('NOW_TIME',$_SERVER['REQUEST_TIME']);
+
 // 加载框架引导文件
 require __DIR__ . '/thinkphp/start.php';

@@ -29,7 +29,7 @@
                 <assign name="m" value="0"/>
                 <foreach name="goods_category_tree" item="vo" key="k">
                     <if condition="$vo[level] eq 1">
-                        <li >
+                        <li name="th{$m}">
                            <a href="javascript:void(0);" <if condition="$m eq 0"></if> data-id="{$m++}">{$vo['mobile_name']|getSubstr=0,12}</a>
                         </li>
                     </if>
@@ -85,6 +85,10 @@
             $('.branchList').eq(index).show().siblings().hide();
             $('.category2').scrollTop(0);
         });
+
+        //加载时点击一次
+        $('.category1 li[name=th{$index}]').click();
+
     });
 </script>
 	</body>

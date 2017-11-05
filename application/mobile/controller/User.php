@@ -282,6 +282,7 @@ class User extends MobileBase
     public function order_list()
     {
         $where = ' user_id=' . $this->user_id;
+        $where .= ' and deleted = 0';
         //条件搜索
        if(I('get.type')){
             $where .= C(strtoupper(I('get.type')));
@@ -384,6 +385,27 @@ class User extends MobileBase
 //        if ($data['status'] < 0)
 //            $this->error($data['msg']);
 //        $this->success($data['msg']);
+    }
+
+    /*
+    *删除订单
+     */
+     public function del_order()
+    {
+        $order_id = I('order_id',0);
+        $data['deleted'] = 1;
+        $result = M("order")->where("order_id",$order_id)->save($data);
+        if($result){
+            $back['status'] = 1;
+            $back['msg'] ="删除成功";
+            $back['content'] = "删除成功";
+        }else{
+            $back['status'] = 0;
+            $back['msg'] ="删除失败";
+            $back['content'] = "删除失败";
+        }
+        echo json_encode($back);
+        exit;
     }
 
     /*

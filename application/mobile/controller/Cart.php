@@ -126,11 +126,11 @@ class Cart extends MobileBase {
             $checkconpon['lid'] = I('lid/d');
         }
         
-        $shippingList = M('Plugin')->where("`type` = 'shipping' and status = 1")->cache(true,TPSHOP_CACHE_TIME)->select();// 物流公司            
+        $shippingList = M('Plugin')->where("`type` = 'shipping' and status = 1")->cache(true,TPSHOP_CACHE_TIME)->select();// 物流公司        
         foreach($shippingList as $k => $v) {
             $dispatchs = calculate_price($this->user_id, $result['cartList'], 0, $v['code'], $address['province'], $address['city'], $address['district']);
             if ($dispatchs['status'] !== 1) {
-                $this->error('物流配置有问题');
+                $this->error($dispatchs['msg']);
             }
             $shippingList[$k]['freight'] = $dispatchs['result']['shipping_price'];
         }
@@ -265,7 +265,6 @@ class Cart extends MobileBase {
         }
         $paymentList = M('Plugin')->where($payment_where)->select();
         $paymentList = convert_arr_key($paymentList, 'code');
-
         foreach($paymentList as $key => $val)
         {
             $val['config_value'] = unserialize($val['config_value']);

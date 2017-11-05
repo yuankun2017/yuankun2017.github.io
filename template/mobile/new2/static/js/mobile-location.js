@@ -2025,12 +2025,12 @@ function locationInitialize()
   city_name = getCookieByName('city_name');
   district_name = getCookieByName('district_name');
   if(province_id==null || city_id==null || district_id==null || province_name==null || city_name==null || district_name==null){
-    province_id = 1;
-    city_id = 2;
-    district_id = 3;
-    province_name = '北京市';
-    city_name = '市辖区';
-    district_name = '东城区';
+    province_id = 33007;
+    city_id = 34628;
+    district_id = 34630;
+    province_name = '四川省';
+    city_name = '乐山市';
+    district_name = '市中区';
   }
   $('#address').text(province_name+city_name+district_name);
 }

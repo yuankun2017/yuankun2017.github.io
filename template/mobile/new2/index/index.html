@@ -60,54 +60,54 @@
     <!--菜单-start-->
     <div class="floor dh">
         <nav>
-            <a href="{:U('Goods/categoryList')}">
+            <a href="{:U('Goods/categoryList',array('index'=>0))}">
                 <span>
-                    <img src="__STATIC__/images/icon_03.png" alt="全部分类" /><br />
-                    <span>全部分类</span>
+                    <img src="__STATIC__/images/icon_03.png" alt="手机商城" /><br />
+                    <span>手机商城</span>
                 </span>
             </a>
-            <a href="{:U('Goods/integralMall')}">
+            <a href="{:U('Goods/categoryList',array('index'=>1))}">
                 <span>
-                    <img src="__STATIC__/images/icon_05.png" alt="积分商城" /><br />
-                    <span>积分商城</span>
+                    <img src="__STATIC__/images/icon_05.png" alt="电脑商城" /><br />
+                    <span>电脑商城</span>
                 </span>
             </a>
-            <a href="{:U('Goods/brandstreet')}">
+<!--             <a href="{:U('Goods/brandstreet')}"> -->
+<!--                 <span> -->
+<!--                     <img src="__STATIC__/images/icon_07.png" alt="品牌街" /><br /> -->
+<!--                     <span>品牌街</span> -->
+<!--                 </span> -->
+<!--             </a> -->
+<!--             <a href="{:U('Activity/promote_goods')}"> -->
+<!--                 <span> -->
+<!--                     <img src="__STATIC__/images/icon_09.png" alt="优惠活动" /><br /> -->
+<!--                     <span>优惠活动</span> -->
+<!--                 </span> -->
+<!--             </a> -->
+<!--             <a href="{:U('Activity/group_list')}"> -->
+<!--                 <span> -->
+<!--                     <img src="__STATIC__/images/icon_15.png" alt="团购" /><br /> -->
+<!--                     <span>团购</span> -->
+<!--                 </span> -->
+<!--             </a> -->
+            <a href="{:U('Goods/categoryList',array('index'=>2))}">
                 <span>
-                    <img src="__STATIC__/images/icon_07.png" alt="品牌街" /><br />
-                    <span>品牌街</span>
-                </span>
-            </a>
-            <a href="{:U('Activity/promote_goods')}">
-                <span>
-                    <img src="__STATIC__/images/icon_09.png" alt="优惠活动" /><br />
-                    <span>优惠活动</span>
-                </span>
-            </a>
-            <a href="{:U('Activity/group_list')}">
-                <span>
-                    <img src="__STATIC__/images/icon_15.png" alt="团购" /><br />
-                    <span>团购</span>
-                </span>
-            </a>
-            <a href="{:U('User/order_list')}">
-                <span>
-                    <img src="__STATIC__/images/icon_16.png" alt="我的订单" /><br />
-                    <span>我的订单</span>
+                    <img src="__STATIC__/images/icon_16.png" alt="手机周边" /><br />
+                    <span>手机周边</span>
                 </span>
             </a>
             <!--<a href="shopcar.html">-->
-            <a href="{:U('Cart/cart')}">
-                <span>
-                    <img src="__STATIC__/images/icon_17.png" alt="购物车" /><br />
-                    <span>购物车</span>
-                </span>
-            </a>
+<!--             <a href="{:U('Cart/cart')}"> -->
+<!--                 <span> -->
+<!--                     <img src="__STATIC__/images/icon_17.png" alt="购物车" /><br /> -->
+<!--                     <span>购物车</span> -->
+<!--                 </span> -->
+<!--             </a> -->
             <!--<a href="my.html">-->
-            <a href="{:U('User/index')}">
+            <a href="{:U('Goods/categoryList',array('index'=>3))}">
                 <span>
-                    <img src="__STATIC__/images/icon_19.png" alt="个人中心" /><br />
-                    <span>个人中心</span>
+                    <img src="__STATIC__/images/icon_19.png" alt="电脑周边" /><br />
+                    <span>电脑周边</span>
                 </span>
             </a>
         </nav>
@@ -187,33 +187,33 @@
     <!--广告位-end-->
 
     <!--新品上市-start-->
-    <div class="floor newshop">
-        <div class="banner">
-            <img src="__STATIC__/images/ind_22.jpg" alt="新品上市"/>
-        </div>
-        <div class="advertisement">
-            <div class="content">
-                <div class="le re fl">
-                    <adv  limit="1" item="v" pid="303">
-                        <a href="{$v[ad_link]}" >
-                            <div class="td">
-                                <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>
-                            </div>
-                        </a>
-                    </adv>
-                </div>
-                <div class="le lefhe fr">
-                    <adv  limit="2" item="v" pid="304">
-                        <a href="{$v[ad_link]}" >
-                            <div class="td">
-                                <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>
-                            </div>
-                        </a>
-                    </adv>
-                </div>
-            </div>
-        </div>
-    </div>
+<!--     <div class="floor newshop"> -->
+<!--         <div class="banner"> -->
+<!--             <img src="__STATIC__/images/ind_22.jpg" alt="新品上市"/> -->
+<!--         </div> -->
+<!--         <div class="advertisement"> -->
+<!--             <div class="content"> -->
+<!--                 <div class="le re fl"> -->
+<!--                     <adv  limit="1" item="v" pid="303"> -->
+<!--                         <a href="{$v[ad_link]}" > -->
+<!--                             <div class="td"> -->
+<!--                                 <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/> -->
+<!--                             </div> -->
+<!--                         </a> -->
+<!--                     </adv> -->
+<!--                 </div> -->
+<!--                 <div class="le lefhe fr"> -->
+<!--                     <adv  limit="2" item="v" pid="304"> -->
+<!--                         <a href="{$v[ad_link]}" > -->
+<!--                             <div class="td"> -->
+<!--                                 <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/> -->
+<!--                             </div> -->
+<!--                         </a> -->
+<!--                     </adv> -->
+<!--                 </div> -->
+<!--             </div> -->
+<!--         </div> -->
+<!--     </div> -->
     <!--新品上市-end-->
 
     <!--热销商品-start-->
@@ -257,9 +257,9 @@
 
     <!--猜您喜欢-start-->
     <div class="floor guesslike">
-        <div class="banner">
-            <img src="__STATIC__/images/ind_52.jpg" alt="猜您喜欢"/>
-        </div>
+<!--         <div class="banner"> -->
+<!--             <img src="__STATIC__/images/ind_52.jpg" alt="猜您喜欢"/> -->
+<!--         </div> -->
         <div class="likeshop">
             <div id="J_ItemList">
                 <ul class="product single_item info">
@@ -307,6 +307,7 @@
      * */
     var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
     var page = 0;
+    ajax_sourch_submit();
     function ajax_sourch_submit(){
         if(before_request == 0)// 上一次请求没回来 不进行下一次请求
             return false;
