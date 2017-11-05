@@ -118,7 +118,7 @@ class Repair extends Base{
 	
 	public function brand(){
 		//查询所有手机品牌
-		$mobile_brand_list = M("repair_mobilebrand")->order("type desc")->select();
+		$mobile_brand_list = M("repair_mobilebrand")->order("type desc,sort")->select();
 		$this->assign("mobile_brand_list",$mobile_brand_list);
 		$this->assign("dataCount",count($mobile_brand_list));
 		return $this->fetch();
@@ -146,7 +146,7 @@ class Repair extends Base{
 								->alias("rmp")
 								->join("tp_repair_mobilebrand rmb","rmp.mobile_bid = rmb.mobile_bid")
 								->field("rmp.*,rmb.name as brand_name")
-								->order("mobile_bid desc")
+								->order("mobile_bid desc,sort")
 								->select();
 		$this->assign("mobile_product_list",$mobile_product_list);
 		$this->assign("dataCount",count($mobile_product_list));
@@ -421,6 +421,7 @@ class Repair extends Base{
 				case "add":
 					$data['type'] = I("post.type")?I("post.type"):1;
 					$data['name'] = I("post.problems_name");
+					$data['sort'] = I("post.sort");
 					$result = M("repair_mobilebrand")->add($data);
 					if($result){
 						$back['status'] = 1;
@@ -436,6 +437,7 @@ class Repair extends Base{
 					$data['mobile_bid'] = I("post.mobile_bid");
 					$data['type'] = I("post.type")?I("post.type"):1;
 					$data['name'] = I("post.problems_name");
+					$data['sort'] = I("post.sort");
 					$result = M("repair_mobilebrand")->where("mobile_bid",$data['mobile_bid'])->save($data);
 					if($result){
 						$back['status'] = 1;
@@ -480,6 +482,7 @@ class Repair extends Base{
 				case "add":
 					$data['mobile_bid'] = I("post.mobile_bid");
 					$data['name'] = I("post.product_name");
+					$data['sort'] = I("post.sort");
 					$result = M("repair_mobileproduct")->add($data);
 					if($result){
 						$back['status'] = 1;
@@ -495,6 +498,7 @@ class Repair extends Base{
 					$data['mobile_pid'] = I("post.mobile_pid");
 					$data['mobile_bid'] = I("post.mobile_bid");
 					$data['name'] = I("post.product_name");
+					$data['sort'] = I("post.sort");
 					$result = M("repair_mobileproduct")->where("mobile_pid",$data['mobile_pid'])->save($data);
 					if($result){
 						$back['status'] = 1;

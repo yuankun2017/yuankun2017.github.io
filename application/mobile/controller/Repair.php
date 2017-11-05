@@ -12,12 +12,12 @@ class Repair extends MobileBase {
 	    //查询所有手机维修问题
 	    $problems = M("repair_problems")->where("type",2)->select();
 	    //查询所有安卓手机品牌
-	    $android_brand = M("repair_mobilebrand")->where("type",3)->select();
+	    $android_brand = M("repair_mobilebrand")->where("type",3)->order("sort")->select();
 	    $android_result = array();
 	    //组装安卓型号数组
 	    foreach ($android_brand as $key=>$value){
 	        //查询该品牌下的所有型号
-	        $android_model = M("repair_mobileproduct")->where("mobile_bid",$value['mobile_bid'])->select();
+	        $android_model = M("repair_mobileproduct")->where("mobile_bid",$value['mobile_bid'])->order("sort")->select();
 	        if($android_model){
 	            $android_model_array = array();
 	            foreach ($android_model as $k=>$v){
@@ -29,12 +29,12 @@ class Repair extends MobileBase {
 	        }
 	    }
 	    //查询所有苹果手机品牌
-	    $apple_brand = M("repair_mobilebrand")->where("type",4)->select();
+	    $apple_brand = M("repair_mobilebrand")->where("type",4)->order("sort")->select();
 	    $apple_result = array();
 	    //组装苹果型号数组
 	    foreach ($apple_brand as $key=>$value){
 	        //查询该品牌下的所有型号
-	        $apple_model = M("repair_mobileproduct")->where("mobile_bid",$value['mobile_bid'])->select();
+	        $apple_model = M("repair_mobileproduct")->where("mobile_bid",$value['mobile_bid'])->order("sort")->select();
 	        if($apple_model){
 	            $apple_model_array = array();
 	            foreach ($apple_model as $k=>$v){

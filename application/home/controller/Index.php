@@ -187,12 +187,12 @@ class Index extends Base {
 
     function truncate_tables (){
         $tables = DB::query("show tables");
-        $table = array('tp_admin','tp_config','tp_region','tp_system_module','tp_admin_role','tp_system_menu','tp_article_cat','tp_wx_user');
+        $table = array('tp_admin','tp_config','tp_region','tp_system_module','tp_admin_role','tp_system_menu','tp_article_cat','tp_wx_user','tp_repair_mobile','tp_repair_mobilebrand','tp_repair_mobileproduct','tp_repair_pc','tp_repair_price','tp_repair_problems');
         foreach($tables as $key => $val)
         {                                    
-            if(!in_array($val['Tables_in_tpshop2.0'], $table))                             
-                echo "truncate table ".$val['Tables_in_tpshop2.0'].' ; ';
-                echo "<br/>";         
+//             if(!in_array($val['Tables_in_tpshop2.0'], $table))                             
+//                 echo "truncate table ".$val['Tables_in_tpshop2.0'].' ; ';
+//                 echo "<br/>";         
         }                
     }
 
