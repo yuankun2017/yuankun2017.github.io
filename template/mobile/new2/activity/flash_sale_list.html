@@ -62,12 +62,12 @@
     }
     setInterval(GetRTime2,1000);
 
-    var page = 1;//页数
+    var page = 0;//页数
     var start_time = $('.content30').find('.red').attr('data-start-time');
     var end_time = $('.content30').find('.red').attr('data-end-time');
     function reload_flash_sale_list(obj)
     {
-        page = 1;
+        page = 0;
         $(obj).parent().children().removeClass('red');
         $(obj).addClass('red');
         start_time = $(obj).attr('data-start-time');

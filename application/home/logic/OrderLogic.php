@@ -156,14 +156,14 @@ class OrderLogic extends Model
             $distributLogic->rebate_log($order); // 生成分成记录
         }
         // 如果有微信公众号 则推送一条消息到微信
-        $user = M('users')->where("user_id", $user_id)->find();
-        if($user['oauth']== 'weixin')
-        {
-            $wx_user = M('wx_user')->find();
-            $jssdk = new \app\mobile\logic\Jssdk($wx_user['appid'],$wx_user['appsecret']);
-            $wx_content = "你刚刚下了一笔订单:{$order['order_sn']} 尽快支付,过期失效!";
-            $jssdk->push_msg($user['openid'],$wx_content);
-        }
+        // $user = M('users')->where("user_id", $user_id)->find();
+        // if($user['oauth']== 'weixin')
+        // {
+        //     $wx_user = M('wx_user')->find();
+        //     $jssdk = new \app\mobile\logic\Jssdk($wx_user['appid'],$wx_user['appsecret']);
+        //     $wx_content = "你刚刚下了一笔订单:{$order['order_sn']} 尽快支付,过期失效!";
+        //     $jssdk->push_msg($user['openid'],$wx_content);
+        // }
         //用户下单, 发送短信给商家
         $res = checkEnableSendSms("3");
         $sender = tpCache("shop_info.mobile");

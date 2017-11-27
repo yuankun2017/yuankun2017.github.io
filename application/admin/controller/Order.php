@@ -596,7 +596,25 @@ class Order extends Base {
 		$data = I('post.');
 		$res = $orderLogic->deliveryHandle($data);
 		if($res){
-			$this->success('操作成功',U('Admin/Order/delivery_info',array('order_id'=>$data['order_id'])));
+             // 如果有微信公众号 则推送一条消息到微信
+            $order_info = M("order")
+                        ->where("order_id",$data['order_id'])
+                        ->find();
+            $user = M('users')->where("user_id", $order_info['user_id'])->find();
+            if($user['oauth']== 'weixin')
+            {
+                $order_goods_name =" ";
+                $order_goods = M('order_goods')->where(array("order_id"=>$data['order_id'],"is_send"=>1))->select();
+                foreach ($order_goods as $key => $value) {
+                    $order_goods_name .= $value['goods_name']." | ";
+                }
+                $order_goods_name = substr($order_goods_name,0,strlen($order_goods_name)-1);
+                $wx_user = M('wx_user')->find();
+                $jssdk = new \app\mobile\logic\Jssdk($wx_user['appid'],$wx_user['appsecret']);
+                $wx_content = "毅腾科技提醒您：您购买的商品：【".$order_goods_name."】，收货地址：【".$order_info['address']."】，快递单号:【".$data['invoice_no']."】 现以发货，请注意查收，感谢您的惠顾";
+                $jssdk->push_msg($user['openid'],$wx_content);
+            }
+            $this->success('操作成功',U('Admin/Order/delivery_info',array('order_id'=>$data['order_id'])));
 		}else{
 			$this->success('操作失败',U('Admin/Order/delivery_info',array('order_id'=>$data['order_id'])));
 		}

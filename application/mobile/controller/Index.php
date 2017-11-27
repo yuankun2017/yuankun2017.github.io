@@ -50,7 +50,8 @@ class Index extends MobileBase {
         $this->assign('start_time',$start_time);
         $this->assign('end_time',$end_time);
         $this->assign('favourite_goods',$favourite_goods);
-       
+        $logo = M("config")->where("name","store_logo")->find();
+        $this->assign('logo_url',$logo['value']);
         return $this->fetch();
     }
 
@@ -85,7 +86,7 @@ class Index extends MobileBase {
     
     public function ajaxGetMore(){
     	$p = I('p/d',1);
-    	$favourite_goods = M('goods')->where("is_recommend=1 and is_on_sale=1")->order('goods_id DESC')->page($p,C('PAGESIZE'))->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
+    	$favourite_goods = M('goods')->where("is_recommend=1 and is_on_sale=1")->order('sort DESC')->page($p,C('PAGESIZE'))->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
     	$this->assign('favourite_goods',$favourite_goods);
     	return $this->fetch();
     }

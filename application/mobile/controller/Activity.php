@@ -154,6 +154,7 @@ class Activity extends MobileBase {
             ->where($where)
             ->page($p,10)
             ->select();
+         // var_dump(Db::getlastsql());
         $this->assign('flash_sale_goods',$flash_sale_goods);
         return $this->fetch();
     }
