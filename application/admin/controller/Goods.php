@@ -300,6 +300,12 @@ class Goods extends Base {
             $is_distribut = input('is_distribut');
             $return_url = $is_distribut > 0 ? U('admin/Distribut/goods_list') : U('admin/Goods/goodsList');
             $data = input('post.');
+            $data['baoxiu_info'] = array();
+            //拼接组装信息
+            foreach ($_POST['baoxiu_name'] as $key => $value) {
+                $data['baoxiu_info'][] = array('baoxiu_name'=>$value,'baoxiu_value'=>$_POST['baoxiu_value'][$key]);
+            }
+            $data['baoxiu_info'] = json_encode($data['baoxiu_info']);
             $validate = \think\Loader::validate('Goods');
             if (!$validate->batch()->check($data)) {
                 $error = $validate->getError();
@@ -374,6 +380,10 @@ class Goods extends Base {
         $goodsInfo = M('Goods')->where('goods_id=' . I('GET.id', 0))->find();
         if ($goodsInfo['price_ladder']) {
             $goodsInfo['price_ladder'] = unserialize($goodsInfo['price_ladder']);
+        }
+        //处理保修格式
+        if ($goodsInfo['baoxiu_info']) {
+            $goodsInfo['baoxiu_info'] = json_decode($goodsInfo['baoxiu_info'],true);
         }
         $level_cat = $GoodsLogic->find_parent_cat($goodsInfo['cat_id']); // 获取分类默认选中的下拉框
         $level_cat2 = $GoodsLogic->find_parent_cat($goodsInfo['extend_cat_id']); // 获取分类默认选中的下拉框

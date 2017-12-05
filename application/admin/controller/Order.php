@@ -86,6 +86,7 @@ class Order extends Base {
         I('user_id') ? $condition['user_id'] = trim(I('user_id')) : false;
         $sort_order = I('order_by','DESC').' '.I('sort');
         $count = M('order')->where($condition)->count();
+
         $Page  = new AjaxPage($count,20);
         //  搜索条件下 分页赋值
         foreach($condition as $key=>$val) {
@@ -245,7 +246,10 @@ class Order extends Base {
         if($has_user){
             $user = M("users")->alias('u')->field('u.nickname')->join('__ORDER__ o', 'o.user_id = u.user_id')->find();
         }
-        
+        //格式化保修查询
+        foreach ($orderGoods as $key => $value) {
+            $orderGoods[$key]['baoxiu_info'] = json_decode($value['baoxiu_info'],true);
+        }
     	$this->assign('admins',$admins);  
         $this->assign('user', $user);
         $this->assign('order',$order);
@@ -595,6 +599,7 @@ class Order extends Base {
         $orderLogic = new OrderLogic();
 		$data = I('post.');
 		$res = $orderLogic->deliveryHandle($data);
+        //更新维修信息
 		if($res){
              // 如果有微信公众号 则推送一条消息到微信
             $order_info = M("order")
@@ -631,6 +636,10 @@ class Order extends Base {
 		if($delivery_record){
 			$order['invoice_no'] = $delivery_record[count($delivery_record)-1]['invoice_no'];
 		}
+        foreach ($orderGoods as $key => $value) {
+            $orderGoods[$key]['baoxiu_info'] = json_decode($value['baoxiu_info'],true);
+        }
+        
 		$this->assign('order',$order);
 		$this->assign('orderGoods',$orderGoods);
 		$this->assign('delivery_record',$delivery_record);//发货记录
@@ -817,6 +826,7 @@ class Order extends Base {
         $orderLogic = new OrderLogic();
         $action = I('get.type');
         $order_id = I('get.order_id');
+        //更新保修
         if($action && $order_id){
             if($action !=='pay'){
                 $res = $orderLogic->orderActionLog($order_id,$action,I('note'));

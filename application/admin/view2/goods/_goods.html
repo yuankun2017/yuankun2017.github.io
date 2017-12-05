@@ -408,7 +408,27 @@
                     <input type="text" value="{$goodsInfo.keywords}" name="keywords" class="input-txt"/>
                     <span class="err" id="err_keywords" style="color:#F00; display:none;"></span>
                 </dd>
-            </dl>       
+            </dl> 
+            <dl class="row">
+                <dt class="tit">
+                    <label for="record_no">保修设置</label>
+                </dt>
+                <dd class="opt weixiu">
+                    <volist name="$goodsInfo.baoxiu_info"  id="vo">
+                        <div class="weixiu_info">
+                            <a href="javascript:void(0)" class="delete_weixiu">【-】</a>
+                            <span>保修名称:</span>
+                            <input type="text" value="{$vo.baoxiu_name}" name="baoxiu_name[]" class="input-txt baoxiu_name"/>
+                            <span>保修期限:</span>
+                            <input type="text" value="{$vo.baoxiu_value}" name="baoxiu_value[]" class="input-txt baoxiu_value"/>
+                            (月份)
+                            <a href="javascript:void(0)" class="add_weixiu">【+】</a>
+                        </div>
+                    </volist>
+                </dd>
+
+            </dl> 
+            <input type="hidden" value="1335" name="baoxiu_info" class="input-txt baoxiu_info"/>         
             <dl class="row">
                 <dt class="tit">
                     <label for="record_no">商品详情描述</label>
@@ -668,7 +688,35 @@ $(document).ready(function(){
         	
         }
     });
+
+    $(".add_weixiu").live('click',function(){
+        var html = '<div class="weixiu_info"><a href="javascript:void(0)" class="delete_weixiu">【-】 </a><span>保修名称: </span><input type="text" value="" name="baoxiu_name[]" class="input-txt baoxiu_name"/><span> 保修期限: </span><input type="text" value="" name="baoxiu_value[]" class="input-txt baoxiu_value"/> (月份) <a href="javascript:void(0)" class="add_weixiu">【+】</a></div>';
+        $(this).parent().parent().append(html);
+    });
+
+    $(".delete_weixiu").live('click',function(){
+        $(this).parent().remove();
+        var ss = $(".weixiu").html();
+        if($(".weixiu").html() == ''){
+            //删除完了
+            var html = '<div class="weixiu_info"><a href="javascript:void(0)" class="delete_weixiu">【-】</a><span> 保修名称:</span><input type="text" value="" name="baoxiu_name[]" class="input-txt baoxiu_name"/><span> 保修期限: </span><input type="text" value="" name="baoxiu_value[]" class="input-txt baoxiu_value"/> (月份) <a href="javascript:void(0)" class="add_weixiu">【+】</a></div>';
+            $(".weixiu").html(html);
+        }
+    });
 });
+
+//组装保修信息
+// function weixin_info(){
+    // var result = [];
+    // $('.weixiu_info').each(function(k,v){
+    //     if($(this).find('.baoxiu_name').val() !='' && $(this).find('.baoxiu_name').val() != ''){
+    //         data = [$(this).find('.baoxiu_name').val(),$(this).find('.baoxiu_value').val()];
+    //         result.push(data);
+    //     } 
+    // })
+    // $(".baoxiu_info").val(result);
+// }
+
 
 /** 以下是编辑时默认选中某个商品分类*/
 $(document).ready(function(){

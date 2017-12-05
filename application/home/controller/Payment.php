@@ -108,7 +108,11 @@ class Payment extends Base {
     }
     
     // 服务器点对点 // http://www.tp-shop.cn/index.php/Home/Payment/notifyUrl        
-    public function notifyUrl(){            
+    public function notifyUrl(){   
+        //获取通知的数据
+        $xml = file_get_contents('php://input');
+        file_put_contents("./aa.txt", $xml);
+        $data = FromXml($xml);         
         $this->payment->response();            
         exit();
     }

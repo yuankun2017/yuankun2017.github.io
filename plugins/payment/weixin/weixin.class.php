@@ -71,8 +71,8 @@ class weixin extends Model
      * 
      */
     function response()
-    {                        
-        require_once("example/notify.php");  
+    {                   
+        require_once("example/notify.php"); 
         $notify = new PayNotifyCallBack();
         $notify->Handle(false);       
     }
