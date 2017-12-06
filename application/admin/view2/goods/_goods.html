@@ -414,6 +414,7 @@
                     <label for="record_no">保修设置</label>
                 </dt>
                 <dd class="opt weixiu">
+                    <if $goodsInfo.baoxiu_info>
                     <volist name="$goodsInfo.baoxiu_info"  id="vo">
                         <div class="weixiu_info">
                             <a href="javascript:void(0)" class="delete_weixiu">【-】</a>
@@ -425,6 +426,17 @@
                             <a href="javascript:void(0)" class="add_weixiu">【+】</a>
                         </div>
                     </volist>
+                    <else />
+                        <div class="weixiu_info">
+                            <a href="javascript:void(0)" class="delete_weixiu">【-】</a>
+                            <span>保修名称:</span>
+                            <input type="text" value="" name="baoxiu_name[]" class="input-txt baoxiu_name"/>
+                            <span>保修期限:</span>
+                            <input type="text" value="" name="baoxiu_value[]" class="input-txt baoxiu_value"/>
+                            (月份)
+                            <a href="javascript:void(0)" class="add_weixiu">【+】</a>
+                        </div>
+                    </if>
                 </dd>
 
             </dl> 
