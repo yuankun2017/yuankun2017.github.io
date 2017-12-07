@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>售后查询</title>
+    <title>保修查询</title>
     <script src="__STATIC__/js/jquery-3.1.1.min.js"></script>
     <script src="__STATIC__/js/mui.min.js"></script>
     <script src="__PUBLIC__/js/global.js"></script>
@@ -12,110 +12,55 @@
 </head>
 <body>
 		<header id="header" class="mui-bar mui-bar-nav">
-			<h1 class="mui-title">售后查询</h1>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">订单{$orderinfo.order_sn}的保修查询</h1>
 		</header>
 		<div class="mui-content">
-			<div class="mui-content-padded" style="margin: 5px;">
-				<form class="mui-input-group" action="{:U('Mobile/Repair/pc_repairs_add')}" method="post" id="pc_repair">
-							<div class="mui-input-row">
-								<label>购买人:</label>
-								<input type="text" name="consignee" placeholder="请输入联系人的姓名">
-							</div>
-							<div class="mui-input-row">
-								<label>购买时间:</label>
-								<input type="text" class="mui-input-clear" name="mobile" id="mobile" placeholder="请输入联系电话" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
-							</div>
-							<h5 class="mui-content-padded">保修详情:</h5>
-							<ul class="mui-table-view mui-table-view-radio">
-								<li class="mui-table-view-cell  mui-selected" id="pc1">
-									<a class="mui-navigate-right">台式机</a>
-								</li>
-								<li class="mui-table-view-cell" id="pc2">
-									<a class="mui-navigate-right">笔记本</a>
-								</li>
-							</ul>
-							<input type="hidden" name="type" id="pc_type" value="1">
-							<h5 class="mui-content-padded">请选择问题描述:</h5>
-							<ul class="mui-table-view mui-table-view-radio">
-								<volist name="problems"  id="vo">
-									<if $i == 1>
-										<li class="mui-table-view-cell mui-selected pc_problems" problems_id="{$vo.problems_id}" price="{$vo.price}">
-											<a class="mui-navigate-right">{$vo.name}</a>
-										</li>
-									<else />
-										<li class="mui-table-view-cell pc_problems" problems_id="{$vo.problems_id}" price="{$vo.price}">	
-											<a class="mui-navigate-right">{$vo.name}</a>
-										</li>		
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<volist name="order_goods_info" id="vo">
+						<li class="mui-table-view-cell mui-collapse mui-active">
+							<a class="mui-navigate-right" href="#">{$vo.goods_name}(点击查看详情)</a>
+							<div class="mui-collapse-content">
+								<form class="mui-input-group">
+									<div class="mui-input-row">
+										<label>商品名称:</label>
+										<input type="text" placeholder="{$vo.goods_name}" disabled="disabled">
+									</div>
+									<if $vo.spec_key_name>
+										<div class="mui-input-row">
+											<label>商品规格:</label>
+											<input type="text" placeholder="{$vo.spec_key_name}" disabled="disabled">
+										</div>
 									</if>
-								</volist>
-							</ul>
-							<h5 class="mui-content-padded" style="color:red;display:none" id="price_h5">预估服务费用:¥<sapn id="price">50</sapn></h5>
-							<input type="hidden" name="problems_id" id="problems_id" value="{$problems[0]['problems_id']}">
-							<h5 class="mui-content-padded">备注信息:</h5>
-							<div class="mui-input-row" style="margin: 10px 5px;">
-								<textarea id="textarea" rows="5" name="des" placeholder="其他问题和要求请填写在此处" form="pc_repair"></textarea>
+									<div class="mui-input-row">
+										<label>价格:</label>
+										<input type="text" placeholder="{$vo.goods_price}" disabled="disabled">
+									</div>
+									<div class="mui-input-row">
+										<label>保修详情:</label>
+									</div>
+									
+									<if $vo.baoxiu >
+										<volist name='$vo.baoxiu' id="voo"> 
+											<div class="mui-input-row">
+												<label>{$voo.baoxiu_name}:</label>
+												<input type="text" style="color: red" value="{$voo.baoxiu_value}" disabled="disabled">
+											</div>
+										</volist>
+									<else />
+										<div class="mui-input-row">
+											<label>保修时间:</label>
+											<input type="text" placeholder="暂无保修信息" disabled="disabled">
+										</div>
+									</if>
+									
+								</form>
 							</div>
-							<div class="mui-button-row">
-								<button type="button" class="mui-btn mui-btn-success mui-btn-block" id="btn_ok">确认</button>
-							</div>
-				</form>
-				<div id="info">
-
-				</div>
+						</li>
+					</volist>
+				</ul>
 			</div>
 		</div>
-		
-		<script type="text/javascript">
-			function get_pc_repair_price(type,problems_id){
-				$.ajax({
-			 		type: "POST",
-		            url: "{:U('Repair/get_repair_price')}",
-		            data: {"type":type,"problems_id":problems_id},
-		            dataType: "json",
-		            success: function (data) {
-		                if (data.status == 1) {
-							$("#price_h5").css("display","block");
-							$("#price").html(data.data);
-		                } else{
-		                	$("#price_h5").css("display","none");
-		                }
-		            }
-				});
-				return true;
-			}
-			$(function(){
-				get_pc_repair_price(1,1);
-				$("#pc1").click(function(){
-					var problems_id = $("#problems_id").val();
-					var price =get_pc_repair_price(1,problems_id);
-					$("#pc_type").val("1");
-				});
-				$("#pc2").click(function(){
-					var problems_id = $("#problems_id").val();
-					var price =get_pc_repair_price(2,problems_id);
-					$("#pc_type").val("2");
-				});
-				
-				$(".pc_problems").click(function(){
-					var type = $("#pc_type").val();
-					var problems_id = $(this).attr("problems_id");
-					var price =get_pc_repair_price(type,problems_id);
-					$("#problems_id").val(problems_id);
-				});
-				$("#btn_ok").click(function(){
-					var mobile = $("#mobile").val();
-					var address = $("#address").val();
-					if(address == ''){
-						mui.alert('请填写取货地址', '毅腾科技提醒您');
-						return false;
-			        }
-			        if(!checkMobile(mobile)){
-			        	mui.alert('请填写正确的电话号码', '毅腾科技提醒您');
-			        	return false;
-			        }
-					$("#pc_repair").submit();
-				})
-			});
-		</script>
 </body>
 </html>

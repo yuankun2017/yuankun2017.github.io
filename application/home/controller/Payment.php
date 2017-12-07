@@ -39,7 +39,6 @@ class Payment extends Base {
         }                        
         //获取通知的数据
         $xml = $GLOBALS['HTTP_RAW_POST_DATA'];      
-        
         if(empty($this->pay_code))
             exit('pay_code 不能为空');
         // 导入具体的支付类文件                
@@ -109,10 +108,25 @@ class Payment extends Base {
     
     // 服务器点对点 // http://www.tp-shop.cn/index.php/Home/Payment/notifyUrl        
     public function notifyUrl(){   
+       
         //获取通知的数据
         $xml = file_get_contents('php://input');
         file_put_contents("./aa.txt", $xml);
-        $data = FromXml($xml);         
+        $data = FromXml($xml); 
+        
+        //成功支付,给老板发送短信提醒
+        $admin_phone = M('config')->where('name','sms_admin_phone')->find();
+        if($admin_phone){
+            //查询订单信息
+            $order_sn = substr($data['out_trade_no'],0,18);
+            $order_info = M('order')->where('order_sn',$order_sn)->field('address,mobile')->find();
+            //发送下单成功短信消息
+            $smsLogic = new \app\common\logic\SmsLogic;
+            $address =$order_info['address'];
+            $phone =$order_info['mobile'];
+             $param = "{\"address\":\"$address\",\"phone\":\"$phone\"}";
+             $result = $smsLogic->sendSmsByAliyun($admin_phone['value'],"毅腾科技",$param,"SMS_94690143");
+        }
         $this->payment->response();            
         exit();
     }

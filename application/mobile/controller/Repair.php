@@ -153,9 +153,42 @@ class Repair extends MobileBase {
 		exit();
 	}
 	
+
+	//售后查询
+	public function order_check(){
+		return $this->fetch();
+	}
+	
 	
 	//售后查询
 	public function order_check_info(){
+		$order_sn = I('post.order_sn');
+		// $order_sn = '201605122147135200';
+		$order_info = M('order')->where('order_sn',$order_sn)->find();
+		if($order_info){
+			$order_goods_info = M('order_goods')
+							->where('order_id',$order_info['order_id'])
+							->select();
+			//计算保修时间
+			foreach ($order_goods_info as $key => $value) {
+				$baoxiu_info = M('goods')->where('goods_id',$value['goods_id'])->field('baoxiu_info')->find();
+				if($baoxiu_info['baoxiu_info']){
+					$baoxiu_data = array();
+					$baoxiu = json_decode($baoxiu_info['baoxiu_info'],true);
+					foreach ($baoxiu as $k => $v) {
+						$baoxiu_data[$k]['baoxiu_name'] = $v['baoxiu_name'];
+						$baoxiu_data[$k]['baoxiu_value'] = date("Y-m-d", strtotime("+".$v['baoxiu_value']." months", $order_info['add_time']));
+					}
+					$order_goods_info[$key]['baoxiu'] = $baoxiu_data;
+				}else{
+					$order_goods_info[$key]['baoxiu'] = $baoxiu_info['baoxiu_info'];
+				}
+			}
+		}else{
+			$this->error('订单不存在','/mobile/repair/order_check');
+		}
+		$this->assign('order_info',$order_info);
+		$this->assign('order_goods_info',$order_goods_info);
 		return $this->fetch();
 	}
 	

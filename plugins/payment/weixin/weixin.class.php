@@ -103,6 +103,7 @@ class weixin extends Model
         $input->SetAttach("weixin");
         $input->SetOut_trade_no($order['order_sn'].time());
         $input->SetTotal_fee($order['order_amount']*100);
+        // $input->SetTotal_fee(1);
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 600));
         $input->SetGoods_tag("tp_wx_pay");
