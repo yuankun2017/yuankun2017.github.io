@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>电脑维护</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js"></script>
+    <script src="__STATIC__/js/mui.min.js"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <link type="text/css" href="__STATIC__/css/mui.min.css" rel="stylesheet"/>
+    <style type="text/css">
+    html,body{margin:0;padding:0;}
+    .iw_poi_title {color:#CC5522;font-size:14px;font-weight:bold;overflow:hidden;padding-right:13px;white-space:nowrap}
+    .iw_poi_content {font:12px arial,sans-serif;overflow:visible;padding-top:4px;white-space:-moz-pre-wrap;word-wrap:break-word}
+
+    body, html,#allmap {
+		width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";
+	}
+    input {
+    	font-size: 12px;
+    	font-family: "微软雅黑";
+    }
+    #up-map-div {
+		z-index:9998;
+		position:fixed;
+	    top:46.9%; 
+	    left:47.4%;
+	}
+	#up-map-div2 {
+		z-index:9999;
+		position:fixed;
+		bottom:2%; 
+	    left:5%;
+	    right: 5%;
+	    width: 90%;
+	}
+
+	.btn1{
+		width: 100%;
+		background-color: #4cd964;
+	}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=mGfEV1leFmIiYXXm4dUoqTE1CTkcAMPH"></script>
+	</head>
+</head>
+<body>
+<!--   	<img src="/public/images/marker_red_sprite.png" style="" /> -->
+	<div id="up-map-div"><img src="/public/images/marker_red_sprite.png" style="" /></div>
+
+	<div id="up-map-div2">
+		<div class="mui-content address">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+				<div class="mui-input-row">
+					<input type="text" class="system_location"  placeholder="定位中..." disabled>
+					</div>
+					<div class="mui-input-row">
+						<input type="text" class="mui-input-clear user_location" placeholder="定位中...">
+					</div>
+				</form>
+				<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-primary btn1" onclick="back_repair()">确认</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--百度地图容器-->
+  	<div style="width:100%;height:100%;border:#ccc solid 1px;position:absolute;" id="container">
+
+</body>
+
+<script type="text/javascript">
+	var map = new BMap.Map("container");          // 创建地图实例  
+	// var point = new BMap.Point(116.404, 39.915);  // 创建点坐标  
+
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放 
+	
+	var lat = 0;
+	var lng = 0;
+
+	var geolocation = new BMap.Geolocation();
+	
+	geolocation.getCurrentPosition(function(r){
+		if(this.getStatus() == BMAP_STATUS_SUCCESS){
+			setTimeout(function(){
+			        var convertor = new BMap.Convertor();
+			        var pointArr = [];
+			        lat = r.point.lat;
+			        lng = r.point.lng;
+			        pointArr.push(r.point);
+			        convertor.translate(pointArr, 1, 5, translateCallback);
+			    }, 1000);
+		}
+		else {
+			alert('failed'+this.getStatus());
+		}        
+	});
+
+    //坐标转换完之后的回调函数
+    translateCallback = function (data){
+      if(data.status === 0) {
+        map.centerAndZoom(data.points[0], 19);
+
+		myGeo.getLocation(data.points[0],
+	        function mCallback(rs){
+	            var allPois = rs.surroundingPois;       //获取全部POI（该点半径为100米内有6个POI点）
+	            // for(i=0;i<allPois.length;++i){
+	            //     // document.getElementById("panel").innerHTML += "<p style='font-size:12px;'>" + (i+1) + "、" + allPois[i].title + ",地址:" + allPois[i].address + "</p>";
+	            //     map.addOverlay(new BMap.Marker(allPois[i].point));                
+	            // }
+	            $(".system_location").val(allPois[0]['title']);
+	            $(".user_location").val(allPois[0]['address']);
+	        },mOption
+	    );
+      }
+    }
+
+    var mOption = {
+	    poiRadius : 500,           //半径为1000米内的POI,默认100米
+	    numPois : 12                //列举出50个POI,默认10个
+	}
+
+	var myGeo = new BMap.Geocoder();        //创建地址解析实例
+
+
+    //监听地图移动事件
+	map.addEventListener("dragend", function(){
+		// map.clearOverlays();
+		var center =map.getCenter();
+		var point = new BMap.Point(center.lng,center.lat);
+	 	lat = center.lat;
+        lng = center.lng;
+		// var mk = new BMap.Marker(point);
+		// map.addOverlay(mk);
+		map.panTo(point);    
+		// alert("地图中心点变更为："+ center.lng +", "+ center.lat);
+		myGeo.getLocation(point,
+	        function mCallback(rs){
+	            var allPois = rs.surroundingPois;       //获取全部POI（该点半径为100米内有6个POI点）
+	            // for(i=0;i<allPois.length;++i){
+	            //     // document.getElementById("panel").innerHTML += "<p style='font-size:12px;'>" + (i+1) + "、" + allPois[i].title + ",地址:" + allPois[i].address + "</p>";
+	            //     map.addOverlay(new BMap.Marker(allPois[i].point));                
+	            // }
+	            $(".system_location").val(allPois[0]['title']);
+	            $(".user_location").val(allPois[0]['address']);
+	        },mOption);
+	});
+
+	//返回维修界面
+	function back_repair(){
+		var source = {$source|default="pc_repire"};
+	}
+</script>
+</html>
