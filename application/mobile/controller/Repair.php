@@ -192,4 +192,11 @@ class Repair extends MobileBase {
 		return $this->fetch();
 	}
 	
+
+	//选择地图
+	public function address_select(){
+		$source = I('srouce');
+		$this->assign('source',$source);
+		return $this->fetch();
+	}
 }

@@ -26,7 +26,7 @@
 								<input type="text" class="mui-input-clear" name="mobile" id="mobile" placeholder="请输入联系电话" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
 							</div>
 		
-							<div class="mui-input-row">
+							<div class="mui-input-row address_select">
 								<label>地址:</label>
 								<input type="text" class="mui-input-clear" name="address" id="address" placeholder="请输入取货地址">
 							</div>
@@ -119,6 +119,10 @@
 			        	return false;
 			        }
 					$("#pc_repair").submit();
+				})
+
+				$(".address_select").click(function(){
+					location.href = "{:U('/mobile/repair/address_select/source/pc_repair')}";
 				})
 			});
 		</script>
