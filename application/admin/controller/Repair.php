@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 use app\admin\logic\GoodsLogic;
 use think\Db;
+use think\AjaxPage;
 use think\Page;
 
 class Repair extends Base{
@@ -658,4 +659,130 @@ class Repair extends Base{
 		return $this->fetch();
 	}
 
+
+	//售后服务
+	public function customer_service(){
+		//查询所有问题
+		$count = M("customer_service")->count();
+	   	$Page  = new AjaxPage($count,20);
+	   	$customer_service_list = M("customer_service")->limit($Page->firstRow.','.$Page->listRows)->order("customer_service_id desc")->select();
+	   	foreach ($customer_service_list as $key => $value) {
+	   		$baoxiu_info = json_decode($value['baoxiu_info'],true);
+	   		$customer_service_list[$key]['customer_service_count'] = count($baoxiu_info);
+	   		$min_repair_time = 0;//最早到保时间
+	   		if($baoxiu_info){
+	   			foreach ($baoxiu_info as $k => $v) {
+		   			if(($v['baoxiu_value'] < $min_repair_time) || $min_repair_time==0){
+		   				$min_repair_time = $v['baoxiu_value'];
+		   			}
+		   		}
+	   		}
+	   		$customer_service_list[$key]['min_repair_time'] = strtotime("+$min_repair_time month",date("Y-m-d",$customer_service_list[$key]['buy_time']));
+	   	}
+
+	   	$show = $Page->show();
+	   	$this->assign("customer_service_list",$customer_service_list);
+	   	$this->assign("dataCount",count($customer_service_list));
+	   	$this->assign('page',$show);// 赋值分页输出
+       	$this->assign('pager',$Page);
+	   	return $this->fetch();
+	}
+
+	//对售后服务的操作
+	public function  customer_service_handle(){
+	        $act = I("act");
+	        switch($act){
+	            case "add":
+	               	$data['phone'] = I("post.phone");
+                    $data['name'] = I("post.name");
+	                $data['goods_name'] = I("post.goods_name");
+	                $data['goods_attr'] = I("post.goods_attr");
+	                $data['goods_price'] = I("post.goods_price");
+	                $data['buy_time'] = date(I("post.buy_time"));
+	                $data['buy_count'] = I("post.buy_count");
+	                $baoxiu_name = $_POST['baoxiu_name'];
+	                $baoxiu_value = $_POST['baoxiu_value'];
+	                $baoxiu_info = array();
+	                if($baoxiu_name){
+	                	foreach ($baoxiu_name as $key => $value) {
+	                		$baoxiu_info[] = array("baoxiu_name"=>$value,'baoxiu_value'=>$baoxiu_value[$key]);
+	                	}
+	                }
+	                $data['baoxiu_info'] = json_encode($baoxiu_info);
+	                $data['addtime'] = time();
+	                $result = M("customer_service")->add($data);
+	                if($result){
+	                    $back['status'] = 1;
+	                    $back['msg'] = "操作成功";
+	                    $back['data'] = $result;
+	                }else{
+	                    $back['status'] = 0;
+	                    $back['msg'] = "操作失败";
+	                    $back['data'] = null;
+	                }
+	                break;
+	            case "edit":
+	            	$customer_service_id = I("post.customer_service_id");
+	                $data['phone'] = I("post.phone");
+                    $data['name'] = I("post.name");
+	                $data['goods_name'] = I("post.goods_name");
+	                $data['goods_attr'] = I("post.goods_attr");
+	                $data['goods_price'] = I("post.goods_price");
+	                $data['buy_time'] = date(I("post.buy_time"));
+	                $data['buy_count'] = I("post.buy_count");
+	                $data['status'] = I("post.status");
+	                $baoxiu_name = $_POST['baoxiu_name'];
+	                $baoxiu_value = $_POST['baoxiu_value'];
+	                $baoxiu_info = array();
+	                if($baoxiu_name){
+	                	foreach ($baoxiu_name as $key => $value) {
+	                		$baoxiu_info[] = array("baoxiu_name"=>$value,'baoxiu_value'=>$baoxiu_value[$key]);
+	                	}
+	                }
+	                $data['baoxiu_info'] = json_encode($baoxiu_info);
+	                $result = M("customer_service")->where("customer_service_id",$customer_service_id)->save($data);
+	                if($result){
+	                    $back['status'] = 1;
+			            $back['msg'] = "操作成功";
+			            $back['data'] = $result;
+	                }else{
+	                   	$back['status'] = 0;
+			            $back['msg'] = "操作失败";
+			            $back['data'] = null;
+	                }
+	                break;
+	            case "del":
+	                $customer_service_id = I("customer_service_id");
+	                $result = M("customer_service")->where("customer_service_id",$customer_service_id)->delete();
+	                break;
+	            default:
+	                $result = 0;
+	                break;
+	        }
+	        if($result){
+	            $back['status'] = 1;
+	            $back['msg'] = "操作成功";
+	            $back['data'] = $result;
+	        }else{
+	            $back['status'] = 0;
+	            $back['msg'] = "操作失败";
+	            $back['data'] = null;
+	        }
+	        echo json_encode($back);
+	}
+
+
+	public function customer_service_info(){
+		$act = I('GET.act', 'add');
+	    $customer_service_id = I('get.customer_service_id');
+	    $customer_service_info = array();
+	    if ($customer_service_id) {
+	        $customer_service_info = D('customer_service')->where('customer_service_id=' . $customer_service_id)->find();
+	        $customer_service_info['baoxiu_info'] = json_decode($customer_service_info['baoxiu_info'],true);
+	        $act = 'edit';
+	    }
+	    $this->assign('info', $customer_service_info);
+	    $this->assign('act', $act);
+	    return $this->fetch();
+	}
 }

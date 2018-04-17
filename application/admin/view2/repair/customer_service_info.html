@@ -1,0 +1,184 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>售后管理管理 </h3>
+                <h5>售后管理详情页</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="customer_service" action="{:U('/admin/repair/customer_service_handle')}" method="post">
+        <input type="hidden" name="customer_service_id" value="{$info.customer_service_id}">
+        <input type="hidden" name="act" value="{$act}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>电话号码</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="phone" id="phone" value="{$info.phone}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">请填写电话号码</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>客户名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="name" id="name" value="{$info.name}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">请填写客户名称</p>
+                </dd>
+            </dl>
+             <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>商品名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="goods_name" id="goods_name" value="{$info.goods_name}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">请填写商品名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>商品规格</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="goods_attr" id="goods_attr" value="{$info.goods_attr}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">请填写商品规格</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>商品价格</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="goods_price" id="goods_price" value="{$info.goods_price}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">商品价格</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>购买时间</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" class="input-txt" id="buy_time" name="buy_time"  value="{$info.buy_time|date="Y-m-d",###}">        
+                    <span class="add-on input-group-addon">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    </span> 
+                    <p class="notic">购买时间</p>
+                </dd>
+            </dl>
+             <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>购买数量</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="goods_price" id="goods_price" value="{$info.goods_price}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">购买数量</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="record_no">保修设置</label>
+                </dt>
+                <dd class="opt weixiu">
+                    <if $info.baoxiu_info>
+                    <volist name="$info.baoxiu_info"  id="vo">
+                        <div class="weixiu_info">
+                            <a href="javascript:void(0)" class="delete_weixiu">【-】</a>
+                            <span>保修名称:</span>
+                            <input type="text" value="{$vo.baoxiu_name}" name="baoxiu_name[]" class="input-txt baoxiu_name"/>
+                            <span>保修期限:</span>
+                            <input type="text" value="{$vo.baoxiu_value}" name="baoxiu_value[]" class="input-txt baoxiu_value"/>
+                            (月份)
+                            <a href="javascript:void(0)" class="add_weixiu">【+】</a>
+                        </div>
+                    </volist>
+                    <else />
+                        <div class="weixiu_info">
+                            <a href="javascript:void(0)" class="delete_weixiu">【-】</a>
+                            <span>保修名称:</span>
+                            <input type="text" value="" name="baoxiu_name[]" class="input-txt baoxiu_name"/>
+                            <span>保修期限:</span>
+                            <input type="text" value="" name="baoxiu_value[]" class="input-txt baoxiu_value"/>
+                            (月份)
+                            <a href="javascript:void(0)" class="add_weixiu">【+】</a>
+                        </div>
+                    </if>
+                </dd>
+            </dl> 
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>状态</label>
+                </dt>
+                <dd class="opt">
+                    <select id="status" name="status">
+                       <option value="0" <if condition="$info[status] == 0">selected</if>>无效</option>
+                       <option value="1" <if condition="$info[status] == 1">selected</if>>正常</option>
+                    </select>
+                    <p class="notic">状态</p>
+                </dd>
+            </dl>
+            <div class="bot"><a onclick="verifyForm()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#buy_time').layDate(); 
+    });
+
+    $(".add_weixiu").live('click',function(){
+        var html = '<div class="weixiu_info"><a href="javascript:void(0)" class="delete_weixiu">【-】 </a><span>保修名称: </span><input type="text" value="" name="baoxiu_name[]" class="input-txt baoxiu_name"/><span> 保修期限: </span><input type="text" value="" name="baoxiu_value[]" class="input-txt baoxiu_value"/> (月份) <a href="javascript:void(0)" class="add_weixiu">【+】</a></div>';
+        $(this).parent().parent().append(html);
+    });
+
+    $(".delete_weixiu").live('click',function(){
+        $(this).parent().remove();
+        var ss = $(".weixiu").html();
+        if($(".weixiu").html() == ''){
+            //删除完了
+            var html = '<div class="weixiu_info"><a href="javascript:void(0)" class="delete_weixiu">【-】</a><span> 保修名称:</span><input type="text" value="" name="baoxiu_name[]" class="input-txt baoxiu_name"/><span> 保修期限: </span><input type="text" value="" name="baoxiu_value[]" class="input-txt baoxiu_value"/> (月份) <a href="javascript:void(0)" class="add_weixiu">【+】</a></div>';
+            $(".weixiu").html(html);
+        }
+    });
+
+     function verifyForm(){
+        $('span.err').hide();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Repair/customer_service_handle')}",
+            data: $('#customer_service').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function(){
+                        location.href = "{:U('Admin/Repair/customer_service')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

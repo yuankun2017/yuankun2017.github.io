@@ -162,7 +162,7 @@ class Repair extends MobileBase {
 	
 	//售后查询
 	public function order_check_info(){
-		$order_sn = I('post.order_sn');
+		$order_sn = I('post.phone');
 		// $order_sn = '201605122147135200';
 		$order_info = M('order')->where('order_sn',$order_sn)->find();
 		if($order_info){
