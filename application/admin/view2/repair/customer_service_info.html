@@ -84,7 +84,7 @@
                     <label><em>*</em>购买数量</label>
                 </dt>
                 <dd class="opt">
-                    <input type="text" name="goods_price" id="goods_price" value="{$info.goods_price}" class="input-txt">
+                    <input type="text" name="buy_count" id="buy_count" value="{$info.buy_count}" class="input-txt">
                     <span class="err" id="err_title"></span>
                     <p class="notic">购买数量</p>
                 </dd>
@@ -126,7 +126,7 @@
                 <dd class="opt">
                     <select id="status" name="status">
                        <option value="0" <if condition="$info[status] == 0">selected</if>>无效</option>
-                       <option value="1" <if condition="$info[status] == 1">selected</if>>正常</option>
+                       <option value="1" <if condition="$info[status] == 1 || $act=='add'">selected</if>>正常</option>
                     </select>
                     <p class="notic">状态</p>
                 </dd>

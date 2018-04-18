@@ -677,7 +677,8 @@ class Repair extends Base{
 		   			}
 		   		}
 	   		}
-	   		$customer_service_list[$key]['min_repair_time'] = strtotime("+$min_repair_time month",date("Y-m-d",$customer_service_list[$key]['buy_time']));
+
+	   		$customer_service_list[$key]['min_repair_time'] = strtotime("+$min_repair_time month",strtotime(date("Y-m-d",$customer_service_list[$key]['buy_time'])));
 	   	}
 
 	   	$show = $Page->show();
@@ -698,7 +699,7 @@ class Repair extends Base{
 	                $data['goods_name'] = I("post.goods_name");
 	                $data['goods_attr'] = I("post.goods_attr");
 	                $data['goods_price'] = I("post.goods_price");
-	                $data['buy_time'] = date(I("post.buy_time"));
+	                $data['buy_time'] = strtotime(I("post.buy_time"));
 	                $data['buy_count'] = I("post.buy_count");
 	                $baoxiu_name = $_POST['baoxiu_name'];
 	                $baoxiu_value = $_POST['baoxiu_value'];
@@ -728,7 +729,7 @@ class Repair extends Base{
 	                $data['goods_name'] = I("post.goods_name");
 	                $data['goods_attr'] = I("post.goods_attr");
 	                $data['goods_price'] = I("post.goods_price");
-	                $data['buy_time'] = date(I("post.buy_time"));
+	                $data['buy_time'] = strtotime(I("post.buy_time"));
 	                $data['buy_count'] = I("post.buy_count");
 	                $data['status'] = I("post.status");
 	                $baoxiu_name = $_POST['baoxiu_name'];

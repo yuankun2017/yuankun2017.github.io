@@ -67,9 +67,9 @@
 						<th align="left" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 120px;" class="">保单创建时间</div>
 						</th>
-						<th align="left" abbr="ac_id" axis="col4" class="">
+<!-- 						<th align="left" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 50px;" class="">状态</div>
-						</th>
+						</th> -->
 						<th align="left" axis="col1" class="handle">
 							<div style="text-align: center; width: 120px;">操作</div>
 						</th>
@@ -132,13 +132,13 @@
 							<td align="left" class="">
 								<div style="text-align: center; width: 120px;">{$vo.addtime|date="Y-m-d H:i:s",###}</div>
 							</td>
-							<td align="left" class="">
+<!-- 							<td align="left" class="">
 								<if $vo.status>
 									<div style="text-align: center; width: 50px;color: green;">正常</div>
 								<else />
 									<div style="text-align: center; width: 50px;color: red;">无效</div>
 								</if>
-							</td>
+							</td> -->
 							<td align="left" class="handle">
 								<div style="text-align: center; width: 120px; max-width:120px;">
 									<a class="btn blue" href="{:U('Repair/customer_service_info',array('act'=>'edit','customer_service_id'=>$vo['customer_service_id']))}"><i class="fa fa-pencil-square-o"></i>编辑</a>

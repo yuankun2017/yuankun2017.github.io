@@ -13,24 +13,24 @@
 <body>
 		<header id="header" class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">订单{$orderinfo.order_sn}的保修查询</h1>
+			<h1 class="mui-title" style="color: red;">{$phone}的保修查询</h1>
 		</header>
 		<div class="mui-content">
 			<div class="mui-card">
 				<ul class="mui-table-view">
-					<volist name="order_goods_info" id="vo">
-						<li class="mui-table-view-cell mui-collapse mui-active">
-							<a class="mui-navigate-right" href="#">{$vo.goods_name}(点击查看详情)</a>
+					<volist name="customer_service_info" id="vo">
+						<li class="mui-table-view-cell mui-collapse <if $i==1>mui-active</if>">
+							<a class="mui-navigate-right" href="#" style="font-family: 16px;color: green;">{$vo.goods_name}(点击查看详情)</a>
 							<div class="mui-collapse-content">
 								<form class="mui-input-group">
 									<div class="mui-input-row">
 										<label>商品名称:</label>
 										<input type="text" placeholder="{$vo.goods_name}" disabled="disabled">
 									</div>
-									<if $vo.spec_key_name>
+									<if $vo.goods_attr>
 										<div class="mui-input-row">
 											<label>商品规格:</label>
-											<input type="text" placeholder="{$vo.spec_key_name}" disabled="disabled">
+											<input type="text" placeholder="{$vo.goods_attr}" disabled="disabled">
 										</div>
 									</if>
 									<div class="mui-input-row">
@@ -38,20 +38,31 @@
 										<input type="text" placeholder="{$vo.goods_price}" disabled="disabled">
 									</div>
 									<div class="mui-input-row">
-										<label>保修详情:</label>
+										<label>购买时间:</label>
+										<input type="text" placeholder="{$vo.buy_time|date='Y-m-d',###}" disabled="disabled">
 									</div>
-									
-									<if $vo.baoxiu >
-										<volist name='$vo.baoxiu' id="voo"> 
+									<div class="mui-input-row">
+										<label>购买人:</label>
+										<input type="text" placeholder="{$vo.name}" disabled="disabled">
+									</div>
+									<div class="mui-input-row">
+										<label>购买数量:</label>
+										<input type="text" placeholder="{$vo.buy_count}" disabled="disabled">
+									</div>
+									<div class="mui-input-row">
+										<label style="width: 50%;text-align: center;color: red;">保修名称</label>
+										<label style="width: 50%;text-align: center;color: red;">到期时间</label>
+									</div>
+									<if $vo.baoxiu_info >
+										<volist name='$vo.baoxiu_info' id="voo"> 
 											<div class="mui-input-row">
-												<label>{$voo.baoxiu_name}:</label>
-												<input type="text" style="color: red" value="{$voo.baoxiu_value}" disabled="disabled">
+												<label style="width: 50%;text-align: center;">{$voo.baoxiu_name}</label>
+												<label style="width: 50%;text-align: center;">{$voo.end_time|date='Y-m-d',###}</label>
 											</div>
 										</volist>
 									<else />
 										<div class="mui-input-row">
-											<label>保修时间:</label>
-											<input type="text" placeholder="暂无保修信息" disabled="disabled">
+											<label style="width: 100%;text-align: center;color: red;">暂无保修信息</label>
 										</div>
 									</if>
 									
