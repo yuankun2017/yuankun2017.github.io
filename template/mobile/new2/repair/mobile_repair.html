@@ -30,23 +30,31 @@
 				<form class="mui-input-group" action="{:U('Mobile/Repair/mobile_repairs_add')}" method="post" id="mobile_repair">
 							<div class="mui-input-row">
 								<label>联系人:</label>
-								<input type="text" name="consignee" placeholder="请输入联系人的姓名">
+								<input type="text" id="consignee" name="consignee" placeholder="请输入联系人的姓名" value="{$info.consignee}">
 							</div>
 							<div class="mui-input-row">
 								<label>电话:</label>
-								<input type="text" class="mui-input-clear"  name="mobile" id="mobile" placeholder="请输入联系电话" >
+								<input type="text" class="mui-input-clear"  name="mobile" id="mobile" placeholder="请输入联系电话" value="{$info.mobile}">
 							</div>
 		
-							<div class="mui-input-row">
+							<div class="mui-input-row address_select">
 								<label>地址:</label>
-								<input type="text" class="mui-input-clear" name="address"  id="address" placeholder="请输入取货地址">
+								<div style="width: 55%;float: left;font-size: 10px;">
+									<div>{$system_location|default='点击此处,请选择地址'}</div>
+									<div>{$user_location|default='定位不准可手动修改'}</div>
+								</div>
+								<div style="float: left; margin-top: 3%;color: #BBBBBB">></div>
+								<input type="hidden" name="lat" value="{$lat}">
+								<input type="hidden" name="lng" value="{$lng}">
+								<input type="hidden" id="address1" name="address1" value="{$system_location}">
+								<input type="hidden" id="address2" name="address2" value="{$user_location}">
 							</div>
 							<h5 class="mui-content-padded">请选择维修类型:</h5>
 							<ul class="mui-table-view mui-table-view-radio">
-								<li class="mui-table-view-cell mui-selected" id="mobile1">
+								<li class="mui-table-view-cell <if $info.mobile_type == 3 || empty($info.mobile_type)>mui-selected</if>" id="mobile1">
 									<a class="mui-navigate-right">安卓手机</a>
 								</li>
-								<li class="mui-table-view-cell " id="mobile2">
+								<li class="mui-table-view-cell <if $info.mobile_type == 4>mui-selected</if>" id="mobile2">
 									<a class="mui-navigate-right">苹果手机</a>
 								</li>
 							</ul>
@@ -54,15 +62,9 @@
 							<h5 class="mui-content-padded">请选择问题描述:</h5>
 							<ul class="mui-table-view mui-table-view-radio">
 								<volist name="problems" id="vo">
-									<if $i == 1>
-										<li class="mui-table-view-cell mui-selected mobile_problems" problems_id="{$vo.problems_id}" price="{$vo.price}">
-											<a class="mui-navigate-right">{$vo.name}</a>
-										</li>
-									<else />
-										<li class="mui-table-view-cell mobile_problems" problems_id="{$vo.problems_id}" price="{$vo.price}">	
-											<a class="mui-navigate-right">{$vo.name}</a>
-										</li>		
-									</if>
+									<li class="mui-table-view-cell <if ($info.problems_id == $vo.problems_id) || ($i==1 && empty($info.problems_id))>mui-selected</if> mobile_problems" problems_id="{$vo.problems_id}" price="{$vo.price}">
+										<a class="mui-navigate-right">{$vo.name}</a>
+									</li>
 								</volist>
 							</ul>
 							<input type="hidden" name="problems_id" id="problems_id" value="{$problems[0]['problems_id']}">
@@ -126,7 +128,7 @@
 			});
 			$("#btn_ok").click(function(){
 				var mobile = $("#mobile").val();
-				var address = $("#address").val();
+				var address = $("#address1").val();
 				var mobile_bid = $("#mobile_bid").val();
 				if(address == ''){
 					mui.alert('请填写取货地址', '毅腾科技提醒您');
@@ -177,7 +179,17 @@
 				});
 			})(mui, document);
 			
-			
+			$('.address_select').click(function(){
+				var consignee =  $('#consignee').val();
+				var mobile = $("#mobile").val();
+				var mobile_type = $("#mobile_type").val();
+				var problems_id = $("#problems_id").val();
+				var describe = $("#textarea").val();
+				var info = {'consignee':consignee,'mobile':mobile,'mobile_type':mobile_type,'problems_id':problems_id,'describe':describe};
+				location.href = "/mobile/repair/address_select/source/mobile_repair/info/"+JSON.stringify(info);
+			})
+
+			$("#textarea").text('{$info.describe}');
 		</script>
 </body>
 </html>

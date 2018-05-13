@@ -382,7 +382,6 @@ function httpRequest($url, $method="GET", $postfields = null, $headers = array()
         curl_setopt($ci, CURLOPT_SSL_VERIFYHOST, FALSE); // 不从证书中检查SSL加密算法是否存在
     }
     //curl_setopt($ci, CURLOPT_HEADER, true); /*启用时会将头文件的信息作为数据流输出*/
-//     curl_setopt($ci, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($ci, CURLOPT_MAXREDIRS, 2);/*指定最多的HTTP重定向的数量，这个选项是和CURLOPT_FOLLOWLOCATION一起使用的*/
     curl_setopt($ci, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ci, CURLINFO_HEADER_OUT, true);

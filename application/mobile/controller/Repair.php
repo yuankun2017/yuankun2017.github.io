@@ -45,6 +45,13 @@ class Repair extends MobileBase {
 	            $apple_result[] = array("value"=>$value['mobile_bid'],"text"=>$value['name']);
 	        }
 	    }
+		$info = json_decode(htmlspecialchars_decode(I('info')),true);
+	    
+	    $this->assign('system_location',I('system_location'));
+	    $this->assign('user_location',I('user_location'));
+	    $this->assign('lat',I('lat'));
+	    $this->assign('lng',I('lng'));
+	    $this->assign('info',$info);
 	    $this->assign("android_result",json_encode($android_result));
 	    $this->assign("apple_result",json_encode($apple_result));
 	    $this->assign("problems",$problems);
@@ -53,9 +60,15 @@ class Repair extends MobileBase {
 	
 	//电脑预约维护
 	public function pc_repair() {
+		$info = json_decode(htmlspecialchars_decode(I('info')),true);
 	    //查询所有电脑维修问题
 	    $problems = M("repair_problems")->where("type",1)->select();
 	    //组装结果
+	    $this->assign('system_location',I('system_location'));
+	    $this->assign('user_location',I('user_location'));
+	    $this->assign('lat',I('lat'));
+	    $this->assign('lng',I('lng'));
+	    $this->assign('info',$info);
 	    $this->assign("problems",$problems);
 		return $this->fetch();
 	}
@@ -67,7 +80,10 @@ class Repair extends MobileBase {
 	    $data['consignee'] = I("post.consignee"); 
 	    $data['mobile'] = I("post.mobile");
 	    $data['des'] = I("post.des");
-	    $data['address'] = I("post.address");
+	    $data['lat'] = I("post.lat");
+	    $data['lng'] = I("post.lng");
+	    $data['address1'] = I("post.address1");
+	    $data['address2'] = I("post.address2");
 	    $data['addtime'] = time();
 	    $data['status'] = 0;
 	    if (!$data['mobile'] && !$data['address']){
@@ -101,7 +117,10 @@ class Repair extends MobileBase {
 	    $data['consignee'] = I("post.consignee");
 	    $data['mobile'] = I("post.mobile");
 	    $data['des'] = I("post.des");
-	    $data['address'] = I("post.address");
+	    $data['lat'] = I("post.lat");
+	    $data['lng'] = I("post.lng");
+	    $data['address1'] = I("post.address1");
+	    $data['address2'] = I("post.address2");
 	    $data['addtime'] = time();
 	    $data['status'] = 0;
 	    $result = M("repair_mobile")->add($data);
@@ -170,7 +189,7 @@ class Repair extends MobileBase {
 				$customer_service_info[$key]['baoxiu_info'] = json_decode($value['baoxiu_info'],true);
 				if($customer_service_info[$key]['baoxiu_info']){
 					foreach ($customer_service_info[$key]['baoxiu_info'] as $k => $v) {
-						$customer_service_info[$key]['baoxiu_info'][$k]['end_time'] = strtotime("+".$v['baoxiu_value']." month",strtotime(date("Y-m-d",$v['buy_time'])));
+						$customer_service_info[$key]['baoxiu_info'][$k]['end_time'] = strtotime("+".$v['baoxiu_value']." month",strtotime(date("Y-m-d",$value['buy_time'])));
 					}
 				}
 			}
@@ -185,8 +204,10 @@ class Repair extends MobileBase {
 
 	//选择地图
 	public function address_select(){
-		$source = I('srouce');
+		$source = I('source','mobile_repair');
+		$info = I('info');
 		$this->assign('source',$source);
+		$this->assign('info',$info);
 		return $this->fetch();
 	}
 }

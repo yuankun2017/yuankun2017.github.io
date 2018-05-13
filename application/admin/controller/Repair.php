@@ -22,6 +22,7 @@ class Repair extends Base{
 	    	$repair_price = M("repair_price")->where(array("type"=>$value['type'],"problems_id"=>$value['problems_id']))->find();
 	    	$pc_repair_list[$key]['price'] = $repair_price['price'];
 	    }
+	    $this->assign('type','repair_pc');
 	    $this->assign("pc_repair_list",$pc_repair_list);
 	    $this->assign("dataCount",count($pc_repair_list));
         return $this->fetch();
@@ -61,7 +62,7 @@ class Repair extends Base{
 	    	$repair_price = M("repair_price")->where(array("type"=>$value['type'],"problems_id"=>$value['problems_id'],"mobile_bid"=>$value['mobile_bid'],"mobile_pid"=>$value['mobile_pid']))->find();
 	    	$pc_repair_list[$key]['price'] = $repair_price['price'];
 	    }
-	     
+	    $this->assign('type','repair_mobile');
 	    $this->assign("pc_repair_list",$pc_repair_list);
 	    $this->assign("dataCount",count($pc_repair_list));
 	    return $this->fetch();
@@ -785,5 +786,17 @@ class Repair extends Base{
 	    $this->assign('info', $customer_service_info);
 	    $this->assign('act', $act);
 	    return $this->fetch();
+	}
+
+	public function address_info(){
+		$type = I('type','repair_pc');
+		$data_id = I('data_id',1);
+		if($type == 'repair_pc'){
+			$result = M($type)->where('repair_pcid',$data_id)->find();
+		}else{
+			$result = M($type)->where('repair_mid',$data_id)->find();
+		}
+		$this->assign('info',$result);
+		return $this->fetch();
 	}
 }
