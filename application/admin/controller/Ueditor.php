@@ -150,7 +150,7 @@ class Ueditor extends Base
 	//上传文件
 	private function upFile($fieldName){
 		$file = request()->file($fieldName);
-		
+
 		$result = $this->validate(
 				['file2' => $file],
 				['file2'=>'image','file2'=>'fileSize:40000000'],
@@ -167,7 +167,7 @@ class Ueditor extends Base
 				return  md5(mt_rand());
 			})->move('public/upload/'.$this->savePath);
 		}
-		
+
 		if($info){
 			$data = array(
 				'state' => 'SUCCESS',
@@ -177,6 +177,7 @@ class Ueditor extends Base
 				'type' => '.' . $info->getExtension(),
 				'size' => $info->getSize(),
 			);
+
 			//图片加水印
 			if($this->savePath=='goods/'){
 				$image = new \Think\Image();

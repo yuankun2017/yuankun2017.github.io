@@ -210,4 +210,10 @@ class Repair extends MobileBase {
 		$this->assign('info',$info);
 		return $this->fetch();
 	}
+
+	//联系我们
+	public function contact(){
+		return $this->fetch();
+	}
+
 }
