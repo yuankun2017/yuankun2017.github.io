@@ -28,6 +28,17 @@
 				<h5>(共{$dataCount}条记录)</h5>
 			</div>
 			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+			<form action="" id="search-form2" class="navbar-form form-inline" method="post" onSubmit="return false">
+			  <div class="sDiv">
+			    <div class="sDiv2">           
+			        <!--排序规则-->
+			        <input type="hidden" name="orderby1" value="goods_id" />
+			        <input type="hidden" name="orderby2" value="desc" />
+			      <input type="text" size="30" name="key_word" class="qsbox" placeholder="手机号/用户名/商品名">
+			      <input type="button"  class="btn search" value="搜索">
+			    </div>
+			  </div>
+			 </form>
 		</div>
 		<div class="hDiv">
 			<div class="hDivBox">
@@ -199,6 +210,11 @@
 			layer.closeAll();
 		});
 	}
+
+	$(".search").click(function(){
+		var search = $('.qsbox').val();
+		location.href = "/admin/repair/customer_service/search/"+search;
+	})
 </script>
 </body>
 </html>

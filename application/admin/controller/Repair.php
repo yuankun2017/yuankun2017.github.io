@@ -666,7 +666,12 @@ class Repair extends Base{
 		//查询所有问题
 		$count = M("customer_service")->count();
 	   	$Page  = new AjaxPage($count,20);
-	   	$customer_service_list = M("customer_service")->limit($Page->firstRow.','.$Page->listRows)->order("customer_service_id desc")->select();
+	   	$search = I('search');
+	   	$where = '';
+	   	if($search){
+	   		$where = " name like '%$search%' or goods_name like '%$search%' or phone like '%$search%'";
+	   	}
+	   	$customer_service_list = M("customer_service")->where($where)->limit($Page->firstRow.','.$Page->listRows)->order("customer_service_id desc")->select();
 	   	foreach ($customer_service_list as $key => $value) {
 	   		$baoxiu_info = json_decode($value['baoxiu_info'],true);
 	   		$customer_service_list[$key]['customer_service_count'] = count($baoxiu_info);
