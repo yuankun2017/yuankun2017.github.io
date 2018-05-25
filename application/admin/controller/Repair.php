@@ -691,6 +691,7 @@ class Repair extends Base{
 	   	$this->assign("customer_service_list",$customer_service_list);
 	   	$this->assign("dataCount",count($customer_service_list));
 	   	$this->assign('page',$show);// 赋值分页输出
+	   	$this->assign('search',$search);
        	$this->assign('pager',$Page);
 	   	return $this->fetch();
 	}

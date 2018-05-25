@@ -216,4 +216,11 @@ class Repair extends MobileBase {
 		return $this->fetch();
 	}
 
+
+	//手机报价图片展示
+	public function mobile_price(){
+		$mobile_price = M('config')->where('name','mobile_price')->find();
+		$this->assign('mobile_price',$mobile_price['value']);
+		return $this->fetch();
+	}
 }

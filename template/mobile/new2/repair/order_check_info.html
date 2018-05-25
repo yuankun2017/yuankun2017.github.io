@@ -57,7 +57,9 @@
 										<volist name='$vo.baoxiu_info' id="voo"> 
 											<div class="mui-input-row">
 												<label style="width: 50%;text-align: center;">{$voo.baoxiu_name}</label>
+												<if $voo.end_time>
 												<label style="width: 50%;text-align: center;">{$voo.end_time|date='Y-m-d',###}</label>
+												</if>
 											</div>
 										</volist>
 									<else />
