@@ -184,9 +184,11 @@ class Repair extends Base{
 	                $data['consignee'] = I("post.consignee");
 	                $data['mobile'] = I("post.mobile");
 	                $data['des'] = I("post.des");
+	                $data['weixiu_list'] = I("post.weixiu_list");
 	                $data['address'] = I("post.address");
 	                $data['addtime'] = time();
 	                $data['status'] = 0;
+	                $data['weixiu_no'] = get_weixiu_no("PC");
 	                $result = M("repair_pc")->add($data);
 	                if($result){
 	                    $back['status'] = 1;
@@ -205,6 +207,7 @@ class Repair extends Base{
 	                $data['consignee'] = I("post.consignee");
 	                $data['mobile'] = I("post.mobile");
 	                $data['des'] = I("post.des");
+	                $data['weixiu_list'] = I("post.weixiu_list");
 	                $data['address'] = I("post.address");
 	                $result = M("repair_pc")->where("repair_pcid",$data['repair_pcid'])->save($data);
 	                if($result){
@@ -254,9 +257,11 @@ class Repair extends Base{
 	                $data['consignee'] = I("post.consignee");
 	                $data['mobile'] = I("post.mobile");
 	                $data['des'] = I("post.des");
+	                $data['weixiu_list'] = I("post.weixiu_list");
 	                $data['address'] = I("post.address");
 	                $data['addtime'] = time();
 	                $data['status'] = 0;
+	                $data['weixiu_no'] = get_weixiu_no("M");
 	                $result = M("repair_mobile")->add($data);
 	                if($result){
 	                    $back['status'] = 1;
@@ -277,6 +282,7 @@ class Repair extends Base{
 	                $data['consignee'] = I("post.consignee");
 	                $data['mobile'] = I("post.mobile");
 	                $data['des'] = I("post.des");
+	                $data['weixiu_list'] = I("post.weixiu_list");
 	                $data['address'] = I("post.address");
 	                $result = M("repair_mobile")->where("repair_mid",$data['repair_mid'])->save($data);
 	                if($result){

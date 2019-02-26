@@ -19,6 +19,16 @@
         <div class="ncap-form-default">
             <dl class="row">
                 <dt class="tit">
+                    <label><em>*</em>预约单号</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="weixiu_no" id="weixiu_no" value="{$info.weixiu_no}" class="input-txt" disabled="">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">预约单号</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
                     <label><em>*</em>联系人</label>
                 </dt>
                 <dd class="opt">
@@ -106,6 +116,16 @@
                         </volist>
                     </select>
                     <p class="notic">手机型号</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>放件列表</label>
+                </dt>
+                <dd class="opt">
+                    <textarea placeholder="请输入放件列表" name="weixiu_list" rows="6" class="tarea">{$info.weixiu_list}</textarea>
+                    <span class="err" id="err_intro"></span>
+                    <p class="notic">放件列表</p>
                 </dd>
             </dl>
             <dl class="row">

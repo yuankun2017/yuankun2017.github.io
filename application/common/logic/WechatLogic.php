@@ -118,10 +118,10 @@ class WechatLogic
 //         $wechatObj->sendMsg($openid, $content);
         //回复图文消息
         $articles=array(
-            array("title"=>"价格比京东还便宜的手机，电脑！","description"=>"顶配电脑华丽来袭","picurl"=>"http://122.114.252.227/public/images/welcome_image.jpg","url"=>"http://mp.weixin.qq.com/s/b6xPUGFH4ef3amEN1W2yDQ"),
+            array("title"=>"关注有礼，毅腾科技全心全意为您服务","description"=>"加入毅腾客户群，红包领不停","picurl"=>"http://www.lsytkj.cn/public/images/welcome_image.jpg","url"=>"https://mp.weixin.qq.com/s/2A2e4jpT-LWol96mWc09Rw"),
         )            ;
         $content = $wechatObj->createReplyMsgOfNews($msg['ToUserName'],$msg['FromUserName'],$articles);
-//         $wechatObj->sendMsg($openid, $content);
+        // $wechatObj->sendMsg($openid, $content);
         exit($content);
     }
     

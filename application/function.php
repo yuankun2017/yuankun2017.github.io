@@ -675,3 +675,8 @@ function urlsafe_b64encode($string)
     $data = str_replace(array('+','/','='),array('-','_',''),$data);
     return $data;
 }
+
+function get_weixiu_no($type) 
+{
+    return "YT".$type.date('Ymd').str_pad(mt_rand(1,99999), 5,'0',STR_PAD_LEFT);
+}

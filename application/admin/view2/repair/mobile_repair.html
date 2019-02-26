@@ -38,7 +38,10 @@
 							<div style="width: 24px;"><i class="ico-check"></i></div>
 						</th>
 						<th align="left" abbr="article_title" axis="col3" class="">
-							<div style="text-align: left; width: 70px;" class="">联系人</div>
+							<div style="text-align: center; width: 120px;" class="">预约单号</div>
+						</th>
+						<th align="left" abbr="article_title" axis="col3" class="">
+							<div style="text-align: center; width: 50px;" class="">联系人</div>
 						</th>
 						<th align="left" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 80px;" class="">联系电话</div>
@@ -47,7 +50,7 @@
 							<div style="text-align: center; width: 50px;" class="">维修类型</div>
 						</th>
 						<th align="center" abbr="article_show" axis="col5" class="">
-							<div style="text-align: center; width: 150px;" class="">问题描述</div>
+							<div style="text-align: center; width: 70px;" class="">问题描述</div>
 						</th>
 						<th align="center" abbr="article_show" axis="col5" class="">
 							<div style="text-align: center; width: 80px;" class="">手机品牌</div>
@@ -55,23 +58,29 @@
 						<th align="center" abbr="article_show" axis="col5" class="">
 							<div style="text-align: center; width: 80px;" class="">手机型号</div>
 						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
+						<!-- <th align="center" abbr="article_time" axis="col6" class="">
 							<div style="text-align: center; width: 150px;" class="">地址</div>
-						</th>
+						</th> -->
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 150px;" class="">详细地址</div>
+							<div style="text-align: center; width: 100px;" class="">详细地址</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
 							<div style="text-align: center; width: 150px;" class="">申请时间</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 150px;" class="">备注</div>
+							<div style="text-align: center; width: 100px;" class="">备注</div>
 						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
+					<!-- 	<th align="center" abbr="article_time" axis="col6" class="">
 							<div style="text-align: center; width: 50px;" class="">预计收费</div>
+						</th> -->
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 130px;" class="">放件列表</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
 							<div style="text-align: center; width: 50px;" class="">已解决</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class="">已发送取件消息</div>
 						</th>
 						<th align="left" axis="col1" class="handle">
 							<div style="text-align: center; width: 120px;">操作</div>
@@ -106,7 +115,10 @@
 								<div style="width: 24px;"><i class="ico-check"></i></div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: left; width: 70px;">{$vo.consignee}</div>
+								<div style="text-align: left; width: 120px;">{$vo.weixiu_no}</div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: left; width: 50px;">{$vo.consignee}</div>
 							</td>
 							<td align="left" class="">
 								<div style="text-align: center; width: 80px;">{$vo.mobile}</div>
@@ -115,7 +127,7 @@
 								<div style="text-align: center; width: 50px;"><if $vo.type == 3>安卓手机<else />苹果手机</if></div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 150px;">{$vo.problems_name}</div>
+								<div style="text-align: center; width: 70px;">{$vo.problems_name}</div>
 							</td>
 							<td align="left" class="">
 								<div style="text-align: center; width: 80px;">{$vo.brand_name}</div>
@@ -123,20 +135,23 @@
 							<td align="left" class="">
 								<div style="text-align: center; width: 80px;">{$vo.product_name}</div>
 							</td>
-							<td align="left" class="">
+							<!-- <td align="left" class="">
 								<div style="text-align: center; width: 150px;" title="{$vo.address1}"><a href="{:U('admin/repair/address_info',array('type'=>$type,'data_id'=>$vo.repair_mid))}">{$vo.address1}</a></div>
-							</td>
+							</td> -->
 							<td align="left" class="">
-								<div style="text-align: center; width: 150px;" title="{$vo.address2}"><a href="{:U('admin/repair/address_info',array('type'=>$type,'data_id'=>$vo.repair_mid))}">{$vo.address2}</div>
+								<div style="text-align: center; width: 100px;" title="{$vo.address2}"><a href="{:U('admin/repair/address_info',array('type'=>$type,'data_id'=>$vo.repair_mid))}">{$vo.address2}</div>
 							</td>
 							<td align="left" class="">
 								<div style="text-align: center; width: 150px;">{$vo.addtime|date="Y-m-d H:i:s",###}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 150px;" title="{$vo.des}">{$vo.des}</div>
+								<div style="text-align: center; width: 100px;" title="{$vo.des}">{$vo.des}</div>
 							</td>
-							<td align="left" class="">
+							<!-- <td align="left" class="">
 								<div style="text-align: center; width: 50px; color:red">{$vo.price|default="0.00"}</div>
+							</td> -->
+							<td align="left" class="">
+								<div style="text-align: center; width: 130px;">{$vo.weixiu_list}</div>
 							</td>
 							<td align="left" class="">
 								 <div style="text-align: center; width: 50px;">
@@ -149,10 +164,20 @@
 									</if>
 								</div>
 							</td>
+							<td align="left" class="">
+								 <div style="text-align: center; width: 100px;">
+									<if $vo.status == 1>
+										<span class="yes" ><i class="fa fa-check-circle"></i>是</span>
+									<else />
+										<span class="no" ><i class="fa fa-ban"></i>否</span>
+									</if>
+								</div>
+							</td>
 							<td align="left" class="handle">
 								<div style="text-align: left; width: 120px; max-width:120px;">
 									<a class="btn blue" href="{:U('Repair/mobile_repair_info',array('act'=>'edit','repair_mid'=>$vo['repair_mid']))}"><i class="fa fa-pencil-square-o"></i>编辑</a>
 									<a class="btn red" href="javascript:void(0)" data-url="{:U('Repair/mobile_repair_handle')}" data-id="{$vo.repair_mid}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
+									<a class="btn green" href="javascript:void(0)" data-url="{:U('Repair/pc_repair_handle')}" data-id="{$vo.repair_pcid}" onClick="delfun(this)"><i class="fa fa-pencil-square-o"></i>发送取件通知</a>
 								</div>
 							</td>
 							<td align="" class="" style="width: 100%;">

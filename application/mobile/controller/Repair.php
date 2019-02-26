@@ -85,6 +85,7 @@ class Repair extends MobileBase {
 	    $data['address1'] = I("post.address1");
 	    $data['address2'] = I("post.address2");
 	    $data['addtime'] = time();
+        $data['weixiu_no'] = get_weixiu_no("PC");
 	    $data['status'] = 0;
 	    if (!$data['mobile'] && !$data['address']){
 	    	$this->error("预约失败,请稍后重试");
@@ -122,6 +123,7 @@ class Repair extends MobileBase {
 	    $data['address1'] = I("post.address1");
 	    $data['address2'] = I("post.address2");
 	    $data['addtime'] = time();
+	    $data['weixiu_no'] = get_weixiu_no("M");
 	    $data['status'] = 0;
 	    $result = M("repair_mobile")->add($data);
 	    if (!$data['mobile'] && !$data['address']){
