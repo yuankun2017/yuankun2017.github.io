@@ -680,3 +680,83 @@ function get_weixiu_no($type)
 {
     return "YT".$type.date('Ymd').str_pad(mt_rand(1,99999), 5,'0',STR_PAD_LEFT);
 }
+
+
+//发送保修成功信息
+function send_get_message($access_token,$user_id,$user_name,$weixiu_no){
+    $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=$access_token";
+    $user_info = M('users')->find($user_id);
+    $data['touser'] = $user_info['openid'];
+    $data['template_id'] = 'xYDTHhbNPxofgOPdTaPqTdohs9umdLd_05R6m7nLHNI';
+    $data['url'] = "https://www.baidu.com";
+    $data['data'] = array(
+        'first' => array(
+            "value"=>"保修成功通知",
+        ),
+        'keyword1'=>array(
+            'value'=>$weixiu_no,
+        ),
+        'keyword2'=>array(
+            'value'=>date('Y-m-d H:i:s'),
+        ),
+        "remark"=>array(
+            'value'=>"$user_name 您好,感谢您的信任,工作人员稍后会与您联系,请注意保持电话畅通。毅腾科技竭诚为您服务！",
+        ),
+
+    );
+    $result = httpRequest($url,'POST',json_encode($data));
+}
+
+//发送取件通知
+function send_over_message($access_token,$user_id,$user_name,$weixiu_no){
+    $access_token = get_access_token();
+    $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=$access_token";
+    $sms_admin_phone = M("config")->where(array("name"=>"sms_admin_phone","inc_type"=>"sms"))->find();
+    $user_info = M('users')->find($user_id);
+    $data['touser'] = $user_info['openid'];
+    $data['template_id'] = 'eMio_vKMcsar3RfOLcONuJeuGxOQL8iexI2ZjLP9DzM';
+    $data['url'] = "https://www.baidu.com";
+    $data['data'] = array(
+        'first' => array(
+            "value"=>"维修服务提醒",
+        ),
+        'track_number'=>array(
+            'value'=>$weixiu_no,
+        ),
+        'asp_name'=>array(
+            'value'=>"毅腾科技师院店",
+        ),
+        'asp_tel'=>array(
+            'value'=>$sms_admin_phone['value'],
+        ),
+        "remark"=>array(
+            'value'=>"$user_name 您好,您在本店保修的宝贝已焕然如新，请及时取回您的宝贝，本店服务时间9:00-21:00。",
+        ),
+
+    );
+    $result = json_decode(httpRequest($url,'POST',json_encode($data)),true);
+    if($result['errcode'] == 0){
+        return true;
+    }else{
+        return $result;
+    }
+}
+
+function get_access_token(){
+        //判断是否过了缓存期
+        $wechat = M('wx_user')->find();
+        $expire_time = $wechat['web_expires'];
+        if($expire_time > time()){
+           return $wechat['web_access_token'];
+        }
+        $appid = $wechat['appid'];
+        $appsecret = $wechat['appsecret'];
+        $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appid}&secret={$appsecret}";
+        $return = httpRequest($url,'GET');
+        $return = json_decode($return,1);
+        $web_expires = time() + 7000; // 提前200秒过期
+        M('wx_user')->where(array('id'=>$wechat['id']))->save(array('web_access_token'=>$return['access_token'],'web_expires'=>$web_expires));
+        return $return['access_token'];
+    }
+
+

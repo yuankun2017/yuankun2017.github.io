@@ -165,8 +165,8 @@
 								</div>
 							</td>
 							<td align="left" class="">
-								 <div style="text-align: center; width: 100px;">
-									<if $vo.status == 1>
+								 <div style="text-align: center; width: 100px;" class="is_over">
+									<if $vo.is_over == 1>
 										<span class="yes" ><i class="fa fa-check-circle"></i>是</span>
 									<else />
 										<span class="no" ><i class="fa fa-ban"></i>否</span>
@@ -177,7 +177,7 @@
 								<div style="text-align: left; width: 120px; max-width:120px;">
 									<a class="btn blue" href="{:U('Repair/mobile_repair_info',array('act'=>'edit','repair_mid'=>$vo['repair_mid']))}"><i class="fa fa-pencil-square-o"></i>编辑</a>
 									<a class="btn red" href="javascript:void(0)" data-url="{:U('Repair/mobile_repair_handle')}" data-id="{$vo.repair_mid}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-									<a class="btn green" href="javascript:void(0)" data-url="{:U('Repair/pc_repair_handle')}" data-id="{$vo.repair_pcid}" onClick="delfun(this)"><i class="fa fa-pencil-square-o"></i>发送取件通知</a>
+									<a class="btn green over_message" href="javascript:void(0)" data-url="{:U('Repair/send_over_message')}" data-id="{$vo.repair_mid}" ><i class="fa fa-pencil-square-o"></i>发送取件通知</a>
 								</div>
 							</td>
 							<td align="" class="" style="width: 100%;">
@@ -229,6 +229,31 @@
 			layer.closeAll();
 		});
 	}
+
+	$(".over_message").click(function(){
+		var id = $(this).attr('data-id');
+		var url1 = $(this).attr('data-url')
+		var obj = $(this);
+		layer.confirm('确认发送消息？', {
+			btn: ['确定', '取消'] //按钮
+		}, function () {
+			$.ajax({
+				type: 'post',
+				url: url1,
+				data : {'id':id,'type':2},
+				dataType: 'json',
+				success: function (data) {
+					layer.closeAll();
+					alert(data.msg);
+					if(data.status == 1){
+						obj.parent().parent().parent().children().find(".is_over").html("<span class='yes' ><i class='fa fa-check-circle'></i>是</span>");
+					}
+				}
+			})
+		}, function () {
+			layer.closeAll();
+		});
+	})
 </script>
 </body>
 </html>

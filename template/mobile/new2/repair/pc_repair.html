@@ -112,10 +112,10 @@
 				$("#btn_ok").click(function(){
 					var mobile = $("#mobile").val();
 					var address = $("#address1").val();
-					if(address == ''){
-						mui.alert('请填写取货地址', '毅腾科技提醒您');
-						return false;
-			        }
+					// if(address == ''){
+					// 	mui.alert('请填写取货地址', '毅腾科技提醒您');
+					// 	return false;
+			  //       }
 			        if(!checkMobile(mobile)){
 			        	mui.alert('请填写正确的电话号码', '毅腾科技提醒您');
 			        	return false;

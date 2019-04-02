@@ -132,7 +132,7 @@
 		  //设置标签的type属性
 		  script.type = "text/javascript";
 		  //设置标签的链接地址
-		  script.src = "http://map.qq.com/api/js?v=2.exp&callback=init";
+		  script.src = "https://map.qq.com/api/js?v=2.exp&callback=init";
 		  //添加标签到dom
 		  document.body.appendChild(script);
 		}
@@ -148,7 +148,7 @@
     			poi_options:'address_format=short;radius=500;page_size=10;page_index=1;policy=2',
     			output:"jsonp",
     　　　　};
-		    var url="http://apis.map.qq.com/ws/geocoder/v1/?";
+		    var url="https://apis.map.qq.com/ws/geocoder/v1/?";
 		    $.ajax({
 		        type:"get",
 		        dataType:'jsonp',

@@ -338,7 +338,7 @@ class WechatLogic
     {
         $fromUsername = $msg['FromUserName'];
         $toUsername   = $msg['ToUserName'];
-        $content = '欢迎来到TPshop商城 !';
+        $content = '毅腾科技欢迎您 !';
         $resultStr = $this->wechatObj->createReplyMsgOfText($toUsername, $fromUsername, $content);
         exit($resultStr);
     }

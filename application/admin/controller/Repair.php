@@ -811,4 +811,42 @@ class Repair extends Base{
 		$this->assign('info',$result);
 		return $this->fetch();
 	}
+
+
+	//发送取件通知
+	public function send_over_message(){
+		$weixiu_id = I("post.id");
+		$type = I('post.type');
+
+		if($type == 1){
+			$weixiu_info = M('repair_pc')->where('repair_pcid',$weixiu_id)->find();
+		}else{
+			$weixiu_info = M('repair_mobile')->where('repair_mid',$weixiu_id)->find();
+		}
+		if(empty($weixiu_info['user_id'])){
+			$back['status'] = 0;
+	        $back['msg'] = "此单为后台创建，消息发送失败";
+	        $back['data'] = null;
+	        echo json_encode($back);
+	        exit();
+		}
+		$wx_access_token = M('wx_user')->find();
+		$result =  send_over_message($wx_access_token['web_access_token'],$weixiu_info['user_id'],$weixiu_info['consignee'],$weixiu_info['weixiu_no']);
+		if($result){
+			$back['status'] = 1;
+	        $back['msg'] = "消息发送成功";
+	        $back['data'] = null;
+	        if($type == 1){
+				$weixiu_info = M('repair_pc')->where('repair_pcid',$weixiu_id)->save(array('is_over'=>1));
+			}else{
+				$weixiu_info = M('repair_mobile')->where('repair_mid',$weixiu_id)->save(array('is_over'=>1));
+			}
+		}else{
+			$back['status'] = 1;
+	        $back['msg'] = "消息发送失败:".$result['errmsg'];
+	        $back['data'] = null;
+		}
+		echo json_encode($back);
+		exit();
+	}
 }

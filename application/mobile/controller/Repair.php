@@ -9,6 +9,7 @@ class Repair extends MobileBase {
     
     //手机预约维护
 	public function mobile_repair() {
+
 	    //查询所有手机维修问题
 	    $problems = M("repair_problems")->where("type",2)->select();
 	    //查询所有安卓手机品牌
@@ -82,6 +83,9 @@ class Repair extends MobileBase {
 	    $data['des'] = I("post.des");
 	    $data['lat'] = I("post.lat");
 	    $data['lng'] = I("post.lng");
+	    if(cookie('user_id')){
+	    	$data['user_id'] = cookie('user_id');
+	    }
 	    $data['address1'] = I("post.address1");
 	    $data['address2'] = I("post.address2");
 	    $data['addtime'] = time();
@@ -103,6 +107,7 @@ class Repair extends MobileBase {
 	        $phone = $data['mobile'];
 	        $param = "{\"type\":\"$type_name\",\"address\":\"$address\",\"phone\":\"$phone\"}";
 	        $result = $smsLogic->sendSmsByAliyun($sms_admin_phone['value'],"毅腾科技",$param,"SMS_94690146");
+	        send_get_message($this->get_access_token(),1,$data['consignee'],$data['weixiu_no']);
 	        $this->success("预约成功");
 	    }else{
 	        $this->error("预约失败,请稍后重试");
@@ -125,6 +130,9 @@ class Repair extends MobileBase {
 	    $data['addtime'] = time();
 	    $data['weixiu_no'] = get_weixiu_no("M");
 	    $data['status'] = 0;
+	    if(cookie('user_id')){
+	    	$data['user_id'] = cookie('user_id');
+	    }
 	    $result = M("repair_mobile")->add($data);
 	    if (!$data['mobile'] && !$data['address']){
 	    	$this->error("预约失败,请稍后重试");
@@ -142,6 +150,7 @@ class Repair extends MobileBase {
 	    	$phone = $data['mobile'];
 	    	$param = "{\"type\":\"$type_name\",\"address\":\"$address\",\"phone\":\"$phone\"}";
 	    	$result = $smsLogic->sendSmsByAliyun($sms_admin_phone['value'],"毅腾科技",$param,"SMS_94690146");
+	    	send_get_message($this->get_access_token(),1,$data['consignee'],$data['weixiu_no']);
 	        $this->success("预约成功");
 	    }else{
 	        $this->error("预约失败,请稍后重试");

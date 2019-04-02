@@ -116,6 +116,10 @@ return	array(
     	    	array('name' => '预约收费管理', 'act'=>'repair_price', 'op'=>'Repair'),
     	    	array('name' => '售后管理', 'act'=>'customer_service', 'op'=>'Repair'),
     	    )),
+
+    	    array('name' => '客户信息','child' => array(
+    	        array('name' => '客户信息管理', 'act'=>'index', 'op'=>'UserTatol'),
+    	    )),
 	)),
     
 		
@@ -141,4 +145,5 @@ return	array(
 				array('name' => '系统更新', 'act'=>'index', 'op'=>'MobileApp'),
 			))
 	)),
+
 );

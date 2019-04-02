@@ -39,7 +39,7 @@ class MobileBase extends Controller {
         $this->assign('wx_qr',$wx_qr);
         //微信浏览器
         if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
-
+            $this->weixin_config = M('wx_user')->find(); //获取微信配置
             $user_temp = session('user');
             if (isset($user_temp['user_id']) && $user_temp['user_id']) {
                 $user = M('users')->where("user_id", $user_temp['user_id'])->find();
@@ -48,7 +48,8 @@ class MobileBase extends Controller {
                     session('user', null);
                 }
             }
-           
+
+            
             if (empty($_SESSION['openid'])) {
                 $this->weixin_config = M('wx_user')->find(); //获取微信配置
                 $this->assign('wechat_config', $this->weixin_config); 
@@ -215,9 +216,11 @@ class MobileBase extends Controller {
         if($expire_time > time()){
            return $this->weixin_config['web_access_token'];
         }
+
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->weixin_config[appid]}&secret={$this->weixin_config[appsecret]}";
         $return = httpRequest($url,'GET');
         $return = json_decode($return,1);
+
         $web_expires = time() + 7140; // 提前60秒过期
         M('wx_user')->where(array('id'=>$this->weixin_config['id']))->save(array('web_access_token'=>$return['access_token'],'web_expires'=>$web_expires));
         return $return['access_token'];
